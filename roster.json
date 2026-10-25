@@ -1,0 +1,216 @@
+{
+  "header": {
+    "title": "WoW Forever",
+    "subtitle": "Track characters, professions, dungeons, raids and boss completions."
+  },
+  "races": [
+    "Human",
+    "Dwarf",
+    "Night Elf",
+    "Gnome",
+    "Orc",
+    "Undead",
+    "Tauren",
+    "Troll",
+    "High Order Skyborne",
+    "Windshaper Skyborne"
+  ],
+  "raceFactions": {
+    "Human": "Alliance",
+    "Dwarf": "Alliance",
+    "Night Elf": "Alliance",
+    "Gnome": "Alliance",
+    "Orc": "Horde",
+    "Undead": "Horde",
+    "Tauren": "Horde",
+    "Troll": "Horde",
+    "High Order Skyborne": "Alliance",
+    "Windshaper Skyborne": "Horde"
+  },
+  "classes": [
+    {
+      "name": "Warrior",
+      "color": "#C79C6E",
+      "icon": "https://wow.zamimg.com/images/wow/icons/large/class_warrior.jpg"
+    },
+    {
+      "name": "Paladin",
+      "color": "#F58CBA",
+      "icon": "https://wow.zamimg.com/images/wow/icons/large/class_paladin.jpg"
+    },
+    {
+      "name": "Hunter",
+      "color": "#ABD473",
+      "icon": "https://wow.zamimg.com/images/wow/icons/large/class_hunter.jpg"
+    },
+    {
+      "name": "Rogue",
+      "color": "#FFF569",
+      "icon": "https://wow.zamimg.com/images/wow/icons/large/class_rogue.jpg"
+    },
+    {
+      "name": "Priest",
+      "color": "#FFFFFF",
+      "icon": "https://wow.zamimg.com/images/wow/icons/large/class_priest.jpg"
+    },
+    {
+      "name": "Shaman",
+      "color": "#0070DE",
+      "icon": "https://wow.zamimg.com/images/wow/icons/large/class_shaman.jpg"
+    },
+    {
+      "name": "Mage",
+      "color": "#69CCF0",
+      "icon": "https://wow.zamimg.com/images/wow/icons/large/class_mage.jpg"
+    },
+    {
+      "name": "Warlock",
+      "color": "#9482C9",
+      "icon": "https://wow.zamimg.com/images/wow/icons/large/class_warlock.jpg"
+    },
+    {
+      "name": "Druid",
+      "color": "#FF7D0A",
+      "icon": "https://wow.zamimg.com/images/wow/icons/large/class_druid.jpg"
+    }
+  ],
+  "content": {
+    "dungeons": [
+      "Ragefire Chasm",
+      "Hall of Thanes",
+      "Ruins of Lordaeron",
+      "Wailing Caverns",
+      "Deadmines",
+      "Shadowfang Keep",
+      "Blackfathom Deeps",
+      "Stormwind Stockades",
+      "Excavation Site: Wetlands",
+      "City of Dalaran",
+      "Gnomeregan",
+      "Razorfen Kraul",
+      "Scarlet Monastery - Graveyard",
+      "Scarlet Monastery - Library",
+      "The Drowned City",
+      "Scarlet Monastery - Armory",
+      "Razorfen Downs",
+      "Scarlet Monastery - Cathedral",
+      "Krol'dok Stronghold",
+      "Uldaman",
+      "Zul'Farrak",
+      "Maraudon",
+      "Alcaz Island Prison",
+      "Sunken Temple",
+      "Blackrock Depths",
+      "Dire Maul (East)",
+      "Blackmaw Hold",
+      "Lower Blackrock Spire",
+      "Dire Maul (North)",
+      "Dire Maul (West)",
+      "Scholomance",
+      "Shaper's Terrace",
+      "Stratholme (Main Gate)",
+      "Stratholme (Service Gate)",
+      "Upper Blackrock Spire"
+    ],
+    "raids": [
+      "Barrow Deeps",
+      "Hyjal Summit",
+      "Onyxia's Lair"
+    ],
+    "worldBosses": [
+      "Lord Kazzak",
+      "Azuregos",
+      "Emeriss",
+      "Lethon",
+      "Taerar",
+      "Ysondre"
+    ]
+  },
+  "characters": [
+    {
+      "id": "1792853079779",
+      "name": "Niican Vanguard",
+      "owner": "Nii",
+      "faction": "Alliance",
+      "race": "Human",
+      "className": "Paladin",
+      "level": 1,
+      "ilvl": 1,
+      "guild": "",
+      "pvpRankNum": 0,
+      "pvpRankTitle": "",
+      "imageUrl": "",
+      "professions": [
+        {
+          "name": "Blacksmithing",
+          "level": 1
+        },
+        {
+          "name": "Mining",
+          "level": 1
+        }
+      ],
+      "secondaryProfessions": {
+        "cooking": 0,
+        "firstAid": 0,
+        "fishing": 0
+      },
+      "completedContent": {
+        "dungeons": {
+          "Ragefire Chasm": false
+        }
+      }
+    },
+    {
+      "id": "1792863774013",
+      "name": "Niixan Vanguard",
+      "owner": "Nii",
+      "faction": "Alliance",
+      "race": "High Order Skyborne",
+      "className": "Mage",
+      "level": 2,
+      "ilvl": 2,
+      "guild": "",
+      "pvpRankNum": 0,
+      "pvpRankTitle": "",
+      "imageUrl": "",
+      "professions": [
+        {
+          "name": "Enchanting",
+          "level": 1
+        },
+        {
+          "name": "Tailoring",
+          "level": 1
+        }
+      ],
+      "secondaryProfessions": {
+        "cooking": 1,
+        "firstAid": 1,
+        "fishing": 1
+      },
+      "completedContent": {}
+    },
+    {
+      "id": "1792868845830",
+      "name": "Jbl ???",
+      "owner": "JBL",
+      "faction": "Alliance",
+      "race": "Human",
+      "className": "Warlock",
+      "level": 1,
+      "ilvl": 1,
+      "guild": "",
+      "pvpRankNum": 0,
+      "pvpRankTitle": "",
+      "imageUrl": "",
+      "professions": [],
+      "secondaryProfessions": {
+        "cooking": 0,
+        "firstAid": 0,
+        "fishing": 0
+      },
+      "completedContent": {}
+    }
+  ]
+}

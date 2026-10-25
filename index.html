@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WoW Forever - Friends & Family Roster</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        wow: {
+                            gold: '#FFB800',
+                            goldHover: '#E0A200',
+                            panel: '#151921',
+                            panelBorder: '#2E384D',
+                            darkBg: '#0B0D12',
+                            cardBg: '#1C2331',
+                            alliance: '#0078FF',
+                            horde: '#B30000',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0B0D12;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(255, 184, 0, 0.08), transparent 40%),
+                radial-gradient(circle at 10% 20%, rgba(0, 120, 255, 0.05), transparent 30%),
+                radial-gradient(circle at 90% 20%, rgba(179, 0, 0, 0.05), transparent 30%);
+            background-attachment: fixed;
+            color: #E2E8F0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0D12;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2E384D;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FFB800;
+        }
+
+        .wow-card {
+            transition: all 0.25s ease-in-out;
+        }
+        .wow-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans">
+
+    <!-- TOP HEADER / BANNER -->
+    <header class="relative border-b-2 border-wow-panelBorder bg-wow-panel py-8 px-4 sm:px-8 shadow-2xl">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-center md:text-left flex-1">
+                <h1 id="headerTitle" class="text-2xl sm:text-4xl font-extrabold font-cinzel text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-wow-gold to-amber-500 tracking-wider mb-2">
+                    WoW Forever Roster - November 4th Launch
+                </h1>
+                <p id="headerSubtitle" class="text-slate-400 text-sm sm:text-base max-w-3xl font-normal leading-relaxed">
+                    Our family & friends character hub for World of Warcraft: Forever! Track stats, professions, gear, and boss completions.
+                </p>
+            </div>
+
+            <!-- Controls Toolbar -->
+            <div class="flex flex-wrap items-center justify-center gap-2.5">
+                <!-- Admin Auth Controls -->
+                <button id="adminLoginBtn" onclick="openAdminModal()" class="px-3.5 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-wow-gold border border-amber-500/40 rounded-lg text-xs sm:text-sm font-extrabold flex items-center gap-2 transition shadow-md">
+                    <i class="fa-solid fa-lock text-xs"></i> Admin Login
+                </button>
+                
+                <div id="adminBadge" class="hidden flex items-center gap-2">
+                    <span class="px-2.5 py-1 bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 text-xs font-bold rounded-md flex items-center gap-1.5">
+                        <i class="fa-solid fa-shield-halved"></i> Admin Mode
+                    </span>
+                    <button onclick="openChangePasscodeModal()" class="px-2.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 text-xs font-semibold" title="Change Passcode">
+                        <i class="fa-solid fa-key text-amber-400"></i>
+                    </button>
+                    <button onclick="logoutAdmin()" class="px-3 py-2 bg-red-950/80 hover:bg-red-900 border border-red-700/60 text-red-200 rounded-lg text-xs font-bold transition">
+                        <i class="fa-solid fa-right-from-bracket"></i> Exit Admin
+                    </button>
+                </div>
+
+                <!-- Admin-Only Management Tools -->
+                <div class="admin-only hidden flex flex-wrap items-center gap-2 border-l border-slate-700 pl-2">
+                    <button onclick="openHeaderEditModal()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg border border-slate-700 text-xs sm:text-sm font-semibold flex items-center gap-2 transition">
+                        <i class="fa-solid fa-pen-to-square text-wow-gold"></i> Title
+                    </button>
+                    <button onclick="openManageRacesModal()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg border border-slate-700 text-xs sm:text-sm font-semibold flex items-center gap-2 transition">
+                        <i class="fa-solid fa-users text-amber-400"></i> Races
+                    </button>
+                    <button onclick="openManageClassesModal()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg border border-slate-700 text-xs sm:text-sm font-semibold flex items-center gap-2 transition">
+                        <i class="fa-solid fa-hat-wizard text-purple-400"></i> Classes
+                    </button>
+                    <button onclick="openManageContentModal()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg border border-slate-700 text-xs sm:text-sm font-semibold flex items-center gap-2 transition">
+                        <i class="fa-solid fa-dungeon text-red-400"></i> Raids/Bosses
+                    </button>
+                </div>
+
+                <!-- Export/Import -->
+                <button onclick="exportData()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg border border-slate-700 text-xs sm:text-sm font-semibold flex items-center gap-2 transition" title="Export Backup JSON">
+                    <i class="fa-solid fa-download text-emerald-400"></i> Export
+                </button>
+                <label class="admin-only hidden px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg border border-slate-700 text-xs sm:text-sm font-semibold flex items-center gap-2 cursor-pointer transition" title="Import JSON">
+                    <i class="fa-solid fa-upload text-blue-400"></i> Import
+                    <input type="file" id="importInput" class="hidden" accept=".json" onchange="importData(event)">
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <div id="draftBanner" class="hidden bg-amber-500/10 border-b border-amber-500/40 text-amber-200 text-xs sm:text-sm px-4 py-2.5 flex flex-wrap items-center justify-center gap-3 text-center">
+        <span><b>Unpublished changes in this browser.</b> Click Export, upload the file as <code>roster.json</code> to Netlify, and everyone will see them.</span>
+        <button onclick="discardDraft()" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-md font-semibold text-slate-200">Discard &amp; reload from site</button>
+    </div>
+
+    <!-- TAB BAR -->
+    <nav id="tabBar" class="bg-wow-panel/90 border-b border-wow-panelBorder sticky top-0 z-30 backdrop-blur"></nav>
+
+    <!-- MAIN CONTAINER (ROSTER TAB) -->
+    <main id="rosterPanel" class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+        <!-- SEARCH, FILTERS & ACTION BAR -->
+        <div class="bg-wow-panel border border-wow-panelBorder rounded-xl p-4 sm:p-5 shadow-lg flex flex-col lg:flex-row gap-4 justify-between items-center">
+            
+            <!-- Left Side: Search & Filters -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 w-full lg:w-auto flex-1">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" oninput="renderRoster()" placeholder="Search character, owner..." class="w-full bg-slate-900 border border-slate-700 text-sm rounded-lg pl-9 pr-3 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-wow-gold">
+                </div>
+
+                <select id="factionFilter" onchange="renderRoster()" class="bg-slate-900 border border-slate-700 text-sm rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-wow-gold">
+                    <option value="ALL">All Factions</option>
+                    <option value="Alliance">Alliance</option>
+                    <option value="Horde">Horde</option>
+                </select>
+
+                <select id="classFilter" onchange="renderRoster()" class="bg-slate-900 border border-slate-700 text-sm rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-wow-gold">
+                    <option value="ALL">All Classes</option>
+                </select>
+
+                <select id="sortBy" onchange="renderRoster()" class="bg-slate-900 border border-slate-700 text-sm rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-wow-gold">
+                    <option value="name-asc">Sort: Name (A-Z)</option>
+                    <option value="level-desc">Sort: Level (High to Low)</option>
+                    <option value="ilvl-desc">Sort: Item Level (High to Low)</option>
+                    <option value="class-asc">Sort: Class</option>
+                    <option value="faction-asc">Sort: Faction</option>
+                </select>
+            </div>
+
+            <!-- Right Side: View Mode & Add Character Button -->
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-end border-t lg:border-t-0 pt-3 lg:pt-0 border-slate-800">
+                <div class="flex bg-slate-900 p-1 rounded-lg border border-slate-700">
+                    <button id="viewGridBtn" onclick="setViewMode('grid')" class="px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-border-all"></i> Cards
+                    </button>
+                    <button id="viewTableBtn" onclick="setViewMode('table')" class="px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-list"></i> Table
+                    </button>
+                </div>
+
+                <button onclick="openAddCharacterModal()" class="admin-only hidden px-4 py-2 bg-gradient-to-r from-amber-500 to-wow-gold hover:from-amber-600 hover:to-amber-500 text-slate-950 font-extrabold rounded-lg text-sm flex items-center gap-2 shadow-lg shadow-amber-500/10 transition transform active:scale-95">
+                    <i class="fa-solid fa-user-plus"></i> Add Character
+                </button>
+            </div>
+        </div>
+
+        <!-- ROSTER DISPLAY AREA -->
+        <div id="rosterContainer"></div>
+
+    </main>
+
+    <!-- EMBEDDED TABS (News, Talent Calculator, future guides) -->
+    <div id="embedHost" class="hidden flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8"></div>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <p>World of Warcraft: Forever Roster Hub &bull; Crafted for Family & Friends</p>
+            <p class="text-slate-600">All Warcraft assets, icons, and names belong to Blizzard Entertainment.</p>
+        </div>
+    </footer>
+
+
+    <!-- MODALS -->
+
+    <!-- ADMIN LOGIN MODAL -->
+    <div id="adminLoginModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-sm rounded-2xl p-6 shadow-2xl relative">
+            <h2 class="text-xl font-bold font-cinzel text-wow-gold mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-lock text-amber-400"></i> Admin Access
+            </h2>
+            <p class="text-xs text-slate-400 mb-4">Enter the administrator passcode to unlock character creation, editing, and boss management tools.</p>
+            
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Passcode</label>
+                    <input type="password" id="adminPasscodeInput" placeholder="Default: 1234" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                    <p id="adminLoginError" class="text-xs text-red-400 font-medium mt-1.5 hidden">Incorrect passcode. Try again.</p>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('adminLoginModal')" class="px-3.5 py-2 bg-slate-800 text-slate-300 rounded-lg text-xs font-semibold">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-wow-gold hover:bg-amber-500 text-slate-950 font-bold rounded-lg text-xs">Unlock Admin Mode</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CHANGE PASSCODE MODAL -->
+    <div id="changePasscodeModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-sm rounded-2xl p-6 shadow-2xl relative">
+            <h2 class="text-xl font-bold font-cinzel text-wow-gold mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-key"></i> Change Passcode
+            </h2>
+            <form onsubmit="saveNewPasscode(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">New Admin Passcode</label>
+                    <input type="password" id="newPasscodeInput" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('changePasscodeModal')" class="px-3.5 py-2 bg-slate-800 text-slate-300 rounded-lg text-xs font-semibold">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-wow-gold hover:bg-amber-500 text-slate-950 font-bold rounded-lg text-xs">Save Passcode</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- HEADER EDIT MODAL -->
+    <div id="headerModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-lg rounded-2xl p-6 shadow-2xl relative">
+            <h2 class="text-xl font-bold font-cinzel text-wow-gold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square"></i> Customize Header
+            </h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Title</label>
+                    <input type="text" id="editHeaderTitle" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Subtitle / Description</label>
+                    <textarea id="editHeaderSubtitle" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"></textarea>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end gap-3">
+                <button onclick="closeModal('headerModal')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm font-semibold">Cancel</button>
+                <button onclick="saveHeaderInfo()" class="px-4 py-2 bg-wow-gold hover:bg-amber-500 text-slate-950 rounded-lg text-sm font-bold">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MANAGE RACES MODAL -->
+    <div id="manageRacesModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-lg rounded-2xl p-6 shadow-2xl relative">
+            <h2 class="text-xl font-bold font-cinzel text-wow-gold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-users"></i> Manage Available Races
+            </h2>
+            <div class="space-y-4">
+                <div class="flex gap-2">
+                    <input type="text" id="newRaceInput" placeholder="Add new race name..." class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                    <select id="newRaceFaction" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                        <option value="Alliance">Alliance</option>
+                        <option value="Horde">Horde</option>
+                        <option value="Both">Either</option>
+                    </select>
+                    <button onclick="addCustomRace()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-lg text-sm font-bold">Add</button>
+                </div>
+                <div id="racesList" class="max-h-60 overflow-y-auto space-y-2 pr-1"></div>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeModal('manageRacesModal')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm font-semibold">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MANAGE CLASSES MODAL -->
+    <div id="manageClassesModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-xl rounded-2xl p-6 shadow-2xl relative">
+            <h2 class="text-xl font-bold font-cinzel text-wow-gold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-hat-wizard"></i> Manage Game Classes
+            </h2>
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                    <input type="text" id="newClassName" placeholder="Class Name" class="sm:col-span-4 bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:border-wow-gold">
+                    <input type="color" id="newClassColor" value="#33937F" class="sm:col-span-2 h-9 w-full bg-slate-900 border border-slate-700 rounded-lg p-1 cursor-pointer">
+                    <input type="url" id="newClassIcon" placeholder="Icon URL (optional)" class="sm:col-span-4 bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:border-wow-gold">
+                    <button onclick="addOrUpdateClass()" class="sm:col-span-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-lg text-xs p-2">Save</button>
+                </div>
+                <div id="classListContainer" class="max-h-64 overflow-y-auto space-y-2 pr-1"></div>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeModal('manageClassesModal')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm font-semibold">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MANAGE CONTENT MODAL -->
+    <div id="manageContentModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-xl rounded-2xl p-6 shadow-2xl relative">
+            <h2 class="text-xl font-bold font-cinzel text-wow-gold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-dungeon"></i> Manage Content & Encounters
+            </h2>
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <select id="newContentType" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                        <option value="dungeons">Dungeon</option>
+                        <option value="raids">Raid</option>
+                        <option value="worldBosses">World Boss</option>
+                    </select>
+                    <input type="text" id="newContentName" placeholder="Name..." class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                    <button onclick="addNewContentItem()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-lg text-sm p-2.5">Add Content</button>
+                </div>
+
+                <div class="border-t border-slate-800 pt-3">
+                    <div class="flex gap-2 border-b border-slate-800 mb-3 text-xs font-semibold">
+                        <button onclick="switchContentTab('dungeons')" id="tab-dungeons" class="pb-2 border-b-2 border-wow-gold text-wow-gold px-2">Dungeons</button>
+                        <button onclick="switchContentTab('raids')" id="tab-raids" class="pb-2 text-slate-400 px-2">Raids</button>
+                        <button onclick="switchContentTab('worldBosses')" id="tab-worldBosses" class="pb-2 text-slate-400 px-2">World Bosses</button>
+                    </div>
+                    <div id="contentItemsList" class="max-h-56 overflow-y-auto space-y-2 pr-1"></div>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeModal('manageContentModal')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm font-semibold">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD / EDIT CHARACTER MODAL -->
+    <div id="characterModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-2xl rounded-2xl p-6 shadow-2xl relative my-8">
+            <h2 id="characterModalTitle" class="text-xl font-bold font-cinzel text-wow-gold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-user-plus"></i> Add New Character
+            </h2>
+            
+            <form id="characterForm" onsubmit="saveCharacter(event)" class="space-y-4">
+                <input type="hidden" id="charId">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Character Name *</label>
+                        <input type="text" id="charName" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Player / Friend Name *</label>
+                        <input type="text" id="charOwner" required placeholder="Who plays this character?" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Faction *</label>
+                        <select id="charFaction" required onchange="autoFillPvpTitle()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                            <option value="Alliance">Alliance</option>
+                            <option value="Horde">Horde</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Race *</label>
+                        <select id="charRace" required onchange="syncFactionFromRace()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"></select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Class *</label>
+                        <select id="charClass" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"></select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Level</label>
+                        <input type="number" id="charLevel" min="1" max="60" value="60" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Item Level (iLvl)</label>
+                        <input type="number" id="charIlvl" min="1" max="1000" value="70" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Guild Name</label>
+                        <input type="text" id="charGuild" placeholder="Optional" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">PvP Rank (1-14)</label>
+                        <select id="charPvpRankNum" onchange="autoFillPvpTitle()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                            <option value="0">Unranked</option>
+                            <option value="1">Rank 1</option>
+                            <option value="2">Rank 2</option>
+                            <option value="3">Rank 3</option>
+                            <option value="4">Rank 4</option>
+                            <option value="5">Rank 5</option>
+                            <option value="6">Rank 6</option>
+                            <option value="7">Rank 7</option>
+                            <option value="8">Rank 8</option>
+                            <option value="9">Rank 9</option>
+                            <option value="10">Rank 10</option>
+                            <option value="11">Rank 11</option>
+                            <option value="12">Rank 12</option>
+                            <option value="13">Rank 13</option>
+                            <option value="14">Rank 14</option>
+                        </select>
+                        <input type="hidden" id="charPvpRankTitle">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Character Screenshot / Image URL or File</label>
+                    <div class="flex gap-2 items-center">
+                        <input type="url" id="charImageUrl" placeholder="https://..." class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                        <label class="px-3 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-lg text-xs font-semibold cursor-pointer whitespace-nowrap">
+                            Upload File
+                            <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-800 pt-3">
+                    <h3 class="text-xs font-bold text-wow-gold uppercase tracking-wider mb-2">Primary Professions</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="flex gap-2">
+                            <select id="charProf1" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:border-wow-gold">
+                                <option value="None">None</option>
+                            </select>
+                            <input type="number" id="charProf1Lvl" placeholder="Lvl" min="0" max="300" class="w-20 bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:border-wow-gold">
+                        </div>
+                        <div class="flex gap-2">
+                            <select id="charProf2" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:border-wow-gold">
+                                <option value="None">None</option>
+                            </select>
+                            <input type="number" id="charProf2Lvl" placeholder="Lvl" min="0" max="300" class="w-20 bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:border-wow-gold">
+                        </div>
+                    </div>
+
+                    <h3 class="text-xs font-bold text-wow-gold uppercase tracking-wider mt-3 mb-2">Secondary Professions</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="flex gap-2">
+                            <span class="text-xs font-medium text-slate-400 self-center w-16">Cooking</span>
+                            <input type="number" id="charProfCooking" placeholder="0-300" min="0" max="300" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:border-wow-gold">
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="text-xs font-medium text-slate-400 self-center w-16">First Aid</span>
+                            <input type="number" id="charProfFirstAid" placeholder="0-300" min="0" max="300" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:border-wow-gold">
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="text-xs font-medium text-slate-400 self-center w-16">Fishing</span>
+                            <input type="number" id="charProfFishing" placeholder="0-300" min="0" max="300" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:border-wow-gold">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end gap-3 border-t border-slate-800 pt-4">
+                    <button type="button" onclick="closeModal('characterModal')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm font-semibold">Cancel</button>
+                    <button type="submit" class="px-5 py-2 bg-wow-gold hover:bg-amber-500 text-slate-950 font-bold rounded-lg text-sm">Save Character</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CHARACTER DETAILS / PORTFOLIO MODAL -->
+    <div id="detailModal" onclick="if(event.target===this)closeModal('detailModal')" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-4xl rounded-2xl p-0 overflow-hidden shadow-2xl relative my-8 text-slate-200">
+            <button onclick="closeModal('detailModal')" aria-label="Close" class="absolute top-3 right-3 z-50 w-9 h-9 bg-slate-900/90 hover:bg-slate-800 border border-slate-700 rounded-full flex items-center justify-center text-slate-300 hover:text-white transition shadow-2xl">
+                <span class="text-base font-bold leading-none">&#10005;</span>
+            </button>
+            <div id="detailModalContent"></div>
+        </div>
+    </div>
+
+
+    <!-- APPLICATION JAVASCRIPT LOGIC -->
+    <script>
+        // CORE STATE & DEFAULTS
+        const DEFAULT_PASSCODE = '1234';
+        
+        const DEFAULT_RACES = ["Human", "Dwarf", "Night Elf", "Gnome", "Orc", "Undead", "Tauren", "Troll"];
+        
+        const DEFAULT_CLASSES = [
+            { name: "Warrior", color: "#C79C6E", icon: "https://wow.zamimg.com/images/wow/icons/large/class_warrior.jpg" },
+            { name: "Paladin", color: "#F58CBA", icon: "https://wow.zamimg.com/images/wow/icons/large/class_paladin.jpg" },
+            { name: "Hunter", color: "#ABD473", icon: "https://wow.zamimg.com/images/wow/icons/large/class_hunter.jpg" },
+            { name: "Rogue", color: "#FFF569", icon: "https://wow.zamimg.com/images/wow/icons/large/class_rogue.jpg" },
+            { name: "Priest", color: "#FFFFFF", icon: "https://wow.zamimg.com/images/wow/icons/large/class_priest.jpg" },
+            { name: "Shaman", color: "#0070DE", icon: "https://wow.zamimg.com/images/wow/icons/large/class_shaman.jpg" },
+            { name: "Mage", color: "#69CCF0", icon: "https://wow.zamimg.com/images/wow/icons/large/class_mage.jpg" },
+            { name: "Warlock", color: "#9482C9", icon: "https://wow.zamimg.com/images/wow/icons/large/class_warlock.jpg" },
+            { name: "Druid", color: "#FF7D0A", icon: "https://wow.zamimg.com/images/wow/icons/large/class_druid.jpg" }
+        ];
+
+        const DEFAULT_CONTENT = {
+            dungeons: ["Ragefire Chasm", "Wailing Caverns", "Deadmines", "Shadowfang Keep", "Blackfathom Deeps", "Stockade", "Gnomeregan", "Razorfen Kraul", "Scarlet Monastery", "Razorfen Downs", "Uldaman", "Zul'Farrak", "Maraudon", "Sunken Temple", "Blackrock Depths", "Lower Blackrock Spire", "Upper Blackrock Spire", "Stratholme", "Scholomance", "Dire Maul"],
+            raids: ["Molten Core", "Onyxia's Lair", "Blackwing Lair", "Zul'Gurub", "Ruins of Ahn'Qiraj", "Temple of Ahn'Qiraj", "Naxxramas"],
+            worldBosses: ["Lord Kazzak", "Azuregos", "Emeriss", "Lethon", "Taerar", "Ysondre"]
+        };
+
+        // Which faction each race belongs to: "Alliance", "Horde", or "Both" (player picks, e.g. Skyborne)
+        const DEFAULT_RACE_FACTIONS = {
+            "Human": "Alliance", "Dwarf": "Alliance", "Night Elf": "Alliance", "Gnome": "Alliance",
+            "Orc": "Horde", "Undead": "Horde", "Tauren": "Horde", "Troll": "Horde"
+        };
+
+        const PROFESSIONS_LIST = ["Alchemy", "Blacksmithing", "Enchanting", "Engineering", "Herbalism", "Leatherworking", "Mining", "Skinning", "Tailoring"];
+
+        const PROFESSION_ICONS = {
+            "Alchemy": "https://wow.zamimg.com/images/wow/icons/large/trade_alchemy.jpg",
+            "Blacksmithing": "https://wow.zamimg.com/images/wow/icons/large/trade_blacksmithing.jpg",
+            "Enchanting": "https://wow.zamimg.com/images/wow/icons/large/trade_engraving.jpg",
+            "Engineering": "https://wow.zamimg.com/images/wow/icons/large/trade_engineering.jpg",
+            "Herbalism": "https://wow.zamimg.com/images/wow/icons/large/spell_nature_naturetouchgrow.jpg",
+            "Leatherworking": "https://wow.zamimg.com/images/wow/icons/large/trade_leatherworking.jpg",
+            "Mining": "https://wow.zamimg.com/images/wow/icons/large/trade_mining.jpg",
+            "Skinning": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_pelt_wolf_01.jpg",
+            "Tailoring": "https://wow.zamimg.com/images/wow/icons/large/trade_tailoring.jpg",
+            "Cooking": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_food_15.jpg",
+            "First Aid": "https://wow.zamimg.com/images/wow/icons/large/spell_holy_sealofsacrifice.jpg",
+            "Fishing": "https://wow.zamimg.com/images/wow/icons/large/trade_fishing.jpg"
+        };
+
+        const PVP_TITLES = {
+            Alliance: ["", "Private", "Corporal", "Sergeant", "Master Sergeant", "Sergeant Major", "Knight", "Knight-Lieutenant", "Knight-Captain", "Knight-Champion", "Lieutenant Commander", "Commander", "Field Marshal", "Grand Marshal", "High Warlord"],
+            Horde: ["", "Scout", "Grunt", "Sergeant", "Senior Sergeant", "First Sergeant", "Stone Guard", "Blood Guard", "Legionnaire", "Centurion", "Champion", "Lieutenant General", "General", "Warlord", "High Warlord"]
+        };
+
+        let state = {
+            isAdmin: false,
+            adminPasscode: localStorage.getItem('wow_admin_passcode') || DEFAULT_PASSCODE,
+            viewMode: localStorage.getItem('wow_view_mode') || 'grid',
+            activeContentTab: 'dungeons',
+            header: JSON.parse(localStorage.getItem('wow_header')) || {
+                title: "WoW Forever Roster - November 4th Launch",
+                subtitle: "Our family & friends character hub for World of Warcraft: Forever! Track stats, professions, gear, and boss completions."
+            },
+            races: JSON.parse(localStorage.getItem('wow_races')) || DEFAULT_RACES,
+            raceFactions: JSON.parse(localStorage.getItem('wow_race_factions')) || DEFAULT_RACE_FACTIONS,
+            classes: JSON.parse(localStorage.getItem('wow_classes')) || DEFAULT_CLASSES,
+            content: JSON.parse(localStorage.getItem('wow_content')) || DEFAULT_CONTENT,
+            characters: JSON.parse(localStorage.getItem('wow_characters')) || []
+        };
+
+        // INITIALIZATION
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadPublishedRoster();
+            applyHeader();
+            populateDropdowns();
+            renderAdminUI();
+            renderRoster();
+            renderDraftBanner();
+            initTabs();
+        });
+
+        // TABS - to add a future tab (guides, etc.), add one line to this list
+        const TABS = [
+            { id: 'news', label: 'News', icon: 'fa-newspaper', type: 'embed', sources: [
+                { label: 'Icy Veins', url: 'https://www.icy-veins.com/wow-forever/' }
+            ] },
+            { id: 'talents', label: 'Talent Calculator', icon: 'fa-diagram-project', type: 'embed', sources: [
+                { label: 'Zockify', url: 'https://www.zockify.com/forever/talents/' }
+            ] },
+            { id: 'roster', label: 'Roster', icon: 'fa-users', type: 'roster' }
+        ];
+        let activeTabId = null;
+
+        function renderTabs() {
+            document.getElementById('tabBar').innerHTML = `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-1 overflow-x-auto">
+                    ${TABS.map(t => `
+                        <button onclick="showTab('${t.id}')" class="px-4 py-3 text-sm font-bold whitespace-nowrap flex items-center gap-2 border-b-2 transition ${t.id === activeTabId ? 'border-wow-gold text-wow-gold' : 'border-transparent text-slate-400 hover:text-white'}">
+                            <i class="fa-solid ${t.icon}"></i> ${t.label}
+                        </button>`).join('')}
+                </div>`;
+        }
+
+        function embedPanelHTML(t) {
+            return `
+                <div id="tab-${t.id}" class="space-y-3">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex flex-wrap items-center gap-2" id="src-btns-${t.id}"></div>
+                        <a id="src-open-${t.id}" href="#" target="_blank" rel="noopener" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center gap-2">
+                            Open in new tab <i class="fa-solid fa-arrow-up-right-from-square text-wow-gold"></i>
+                        </a>
+                    </div>
+                    <p class="text-xs text-slate-500">If the page below stays blank, that site is not allowing embedding &mdash; use &ldquo;Open in new tab&rdquo;.</p>
+                    <iframe id="src-frame-${t.id}" referrerpolicy="no-referrer" allow="fullscreen" class="w-full rounded-xl border border-wow-panelBorder bg-slate-950" style="height: calc(100vh - 260px); min-height: 640px;"></iframe>
+                </div>`;
+        }
+
+        function setSource(tabId, idx) {
+            const t = TABS.find(x => x.id === tabId);
+            const src = t.sources[idx];
+            document.getElementById('src-frame-' + tabId).src = src.url;
+            document.getElementById('src-open-' + tabId).href = src.url;
+            const btns = document.getElementById('src-btns-' + tabId);
+            btns.innerHTML = t.sources.length < 2 ? `<span class="text-xs font-semibold text-slate-300">${src.label}</span>` : t.sources.map((x, i) => `
+                <button onclick="setSource('${tabId}', ${i})" class="px-3 py-1.5 rounded-lg text-xs font-bold border transition ${i === idx ? 'bg-amber-500/20 text-wow-gold border-amber-500/50' : 'bg-slate-800 text-slate-300 border-slate-700 hover:text-white'}">${x.label}</button>`).join('');
+        }
+
+        function showTab(id) {
+            const tab = TABS.find(t => t.id === id) || TABS[0];
+            activeTabId = tab.id;
+            const host = document.getElementById('embedHost');
+            document.getElementById('rosterPanel').classList.toggle('hidden', tab.type !== 'roster');
+            host.classList.toggle('hidden', tab.type !== 'embed');
+            // embedded pages load the first time their tab is opened, then stay loaded
+            if (tab.type === 'embed' && !document.getElementById('tab-' + tab.id)) { host.insertAdjacentHTML('beforeend', embedPanelHTML(tab)); setSource(tab.id, 0); }
+            TABS.filter(t => t.type === 'embed').forEach(t => {
+                const p = document.getElementById('tab-' + t.id);
+                if (p) p.classList.toggle('hidden', t.id !== tab.id);
+            });
+            renderTabs();
+            try { history.replaceState(null, '', '#' + tab.id); } catch (e) {}
+        }
+
+        function initTabs() {
+            showTab(location.hash.slice(1) || TABS[0].id);
+        }
+
+        // LOAD THE PUBLISHED roster.json (what visitors see)
+        const OLD_ICON_HOST = 'https://render.worldofwarcraft.com/us/icons/56/';
+        const NEW_ICON_HOST = 'https://wow.zamimg.com/images/wow/icons/large/';
+
+        function migrateIcons() {
+            (state.classes || []).forEach(c => {
+                if (c.icon && c.icon.startsWith(OLD_ICON_HOST)) c.icon = NEW_ICON_HOST + c.icon.slice(OLD_ICON_HOST.length);
+            });
+        }
+
+        async function loadPublishedRoster() {
+            let hasDraft = false;
+            try { hasDraft = localStorage.getItem('wow_dirty') === '1'; } catch (e) {}
+            if (!hasDraft) {
+                try {
+                    const res = await fetch('roster.json?v=' + Date.now(), { cache: 'no-store' });
+                    if (res.ok) {
+                        const d = await res.json();
+                        if (Array.isArray(d.characters)) state.characters = d.characters;
+                        if (Array.isArray(d.races)) state.races = d.races;
+                        if (d.raceFactions) state.raceFactions = d.raceFactions;
+                        if (Array.isArray(d.classes)) state.classes = d.classes;
+                        if (d.content) state.content = d.content;
+                        if (d.header) state.header = d.header;
+                    }
+                } catch (e) { console.warn('roster.json not loaded, using local data', e); }
+            }
+            migrateIcons();
+        }
+
+        function renderDraftBanner() {
+            let dirty = false;
+            try { dirty = localStorage.getItem('wow_dirty') === '1'; } catch (e) {}
+            document.getElementById('draftBanner').classList.toggle('hidden', !dirty);
+        }
+
+        function discardDraft() {
+            if (!confirm('Discard the changes saved in this browser and reload the published roster?')) return;
+            try { ['wow_dirty','wow_characters','wow_races','wow_race_factions','wow_classes','wow_content','wow_header'].forEach(k => localStorage.removeItem(k)); } catch (e) {}
+            location.reload();
+        }
+
+        // Game icons: try the next icon host if one fails, then show a neutral placeholder
+        const ICON_HOSTS = [
+            'https://wow.zamimg.com/images/wow/icons/large/',
+            'https://render.worldofwarcraft.com/us/icons/56/'
+        ];
+        document.addEventListener('error', (e) => {
+            const img = e.target;
+            if (!img || img.tagName !== 'IMG') return;
+            const host = ICON_HOSTS.find(h => img.src.startsWith(h));
+            if (!host) return;
+            const tried = parseInt(img.dataset.iconTry || '0') + 1;
+            if (tried < ICON_HOSTS.length) {
+                img.dataset.iconTry = tried;
+                const file = img.src.slice(host.length);
+                img.src = ICON_HOSTS[(ICON_HOSTS.indexOf(host) + 1) % ICON_HOSTS.length] + file;
+                return;
+            }
+            const ph = document.createElement('span');
+            ph.className = img.className + ' inline-flex items-center justify-center bg-slate-800 text-wow-gold font-bold shrink-0';
+            ph.textContent = '\u2694';
+            img.replaceWith(ph);
+        }, true);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') ['detailModal','characterModal'].forEach(id => closeModal(id));
+        });
+
+        // PERSISTENCE HELPER (SAFE TRY/CATCH PREVENTS QUOTA EXCEEDED ERRORS)
+        function saveState() {
+            try {
+                localStorage.setItem('wow_races', JSON.stringify(state.races));
+                localStorage.setItem('wow_race_factions', JSON.stringify(state.raceFactions));
+                localStorage.setItem('wow_classes', JSON.stringify(state.classes));
+                localStorage.setItem('wow_content', JSON.stringify(state.content));
+                localStorage.setItem('wow_characters', JSON.stringify(state.characters));
+                localStorage.setItem('wow_header', JSON.stringify(state.header));
+                localStorage.setItem('wow_dirty', '1');
+                renderDraftBanner();
+            } catch (err) {
+                console.warn("Storage Quota Limit Hit:", err);
+                alert("Storage limit reached! If you uploaded large image files, try using an image URL link instead of local uploads.");
+            }
+        }
+
+        // HEADER FUNCTIONS
+        function applyHeader() {
+            document.getElementById('headerTitle').innerText = state.header.title;
+            document.getElementById('headerSubtitle').innerText = state.header.subtitle;
+        }
+
+        function openHeaderEditModal() {
+            document.getElementById('editHeaderTitle').value = state.header.title;
+            document.getElementById('editHeaderSubtitle').value = state.header.subtitle;
+            openModal('headerModal');
+        }
+
+        function saveHeaderInfo() {
+            state.header.title = document.getElementById('editHeaderTitle').value;
+            state.header.subtitle = document.getElementById('editHeaderSubtitle').value;
+            saveState();
+            applyHeader();
+            closeModal('headerModal');
+        }
+
+        // ADMIN AUTHENTICATION
+        function openAdminModal() {
+            document.getElementById('adminPasscodeInput').value = '';
+            document.getElementById('adminLoginError').classList.add('hidden');
+            openModal('adminLoginModal');
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const val = document.getElementById('adminPasscodeInput').value;
+            if (val === state.adminPasscode) {
+                state.isAdmin = true;
+                renderAdminUI();
+                renderRoster();
+                closeModal('adminLoginModal');
+            } else {
+                document.getElementById('adminLoginError').classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            state.isAdmin = false;
+            renderAdminUI();
+            renderRoster();
+        }
+
+        function openChangePasscodeModal() {
+            document.getElementById('newPasscodeInput').value = '';
+            openModal('changePasscodeModal');
+        }
+
+        function saveNewPasscode(e) {
+            e.preventDefault();
+            const newCode = document.getElementById('newPasscodeInput').value;
+            if (newCode) {
+                state.adminPasscode = newCode;
+                localStorage.setItem('wow_admin_passcode', newCode);
+                closeModal('changePasscodeModal');
+                alert("Passcode successfully updated!");
+            }
+        }
+
+        function renderAdminUI() {
+            const adminElements = document.querySelectorAll('.admin-only');
+            const loginBtn = document.getElementById('adminLoginBtn');
+            const adminBadge = document.getElementById('adminBadge');
+
+            if (state.isAdmin) {
+                adminElements.forEach(el => el.classList.remove('hidden'));
+                loginBtn.classList.add('hidden');
+                adminBadge.classList.remove('hidden');
+            } else {
+                adminElements.forEach(el => el.classList.add('hidden'));
+                loginBtn.classList.remove('hidden');
+                adminBadge.classList.add('hidden');
+            }
+        }
+
+        // MODAL TOGGLES
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        // DROPDOWNS POPULATION
+        function populateDropdowns() {
+            // Race dropdowns
+            const raceSelect = document.getElementById('charRace');
+            raceSelect.innerHTML = state.races.map(r => `<option value="${r}">${r}</option>`).join('');
+
+            // Class dropdowns & filters
+            const classSelect = document.getElementById('charClass');
+            const classFilter = document.getElementById('classFilter');
+            
+            const classOptionsHtml = state.classes.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+            classSelect.innerHTML = classOptionsHtml;
+            classFilter.innerHTML = `<option value="ALL">All Classes</option>` + classOptionsHtml;
+
+            // Profession dropdowns
+            const prof1 = document.getElementById('charProf1');
+            const prof2 = document.getElementById('charProf2');
+            const profOptions = `<option value="None">None</option>` + PROFESSIONS_LIST.map(p => `<option value="${p}">${p}</option>`).join('');
+            prof1.innerHTML = profOptions;
+            prof2.innerHTML = profOptions;
+        }
+
+        function autoFillPvpTitle() {
+            const faction = document.getElementById('charFaction').value;
+            const rankNum = parseInt(document.getElementById('charPvpRankNum').value) || 0;
+            const titleInput = document.getElementById('charPvpRankTitle');
+            
+            if (rankNum > 0 && PVP_TITLES[faction] && PVP_TITLES[faction][rankNum]) {
+                titleInput.value = PVP_TITLES[faction][rankNum];
+            } else {
+                titleInput.value = "";
+            }
+        }
+
+        // MANAGE RACES
+        function openManageRacesModal() {
+            renderRacesList();
+            openModal('manageRacesModal');
+        }
+
+        function raceFaction(name) {
+            return (state.raceFactions && state.raceFactions[name]) || 'Both';
+        }
+
+        function renderRacesList() {
+            const container = document.getElementById('racesList');
+            container.innerHTML = state.races.map((r, index) => `
+                <div class="flex items-center justify-between gap-2 bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+                    <span class="text-sm font-semibold text-slate-200 flex-1 truncate">${r}</span>
+                    <select onchange="setRaceFaction(${index}, this.value)" class="bg-slate-950 border border-slate-700 rounded-md px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-wow-gold">
+                        ${['Alliance', 'Horde', 'Both'].map(f => `<option value="${f}" ${raceFaction(r) === f ? 'selected' : ''}>${f === 'Both' ? 'Either' : f}</option>`).join('')}
+                    </select>
+                    <button onclick="deleteRace(${index})" class="text-red-400 hover:text-red-300 text-xs px-2 py-1 rounded bg-red-950/40">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function setRaceFaction(index, faction) {
+            state.raceFactions[state.races[index]] = faction;
+            saveState();
+        }
+
+        function addCustomRace() {
+            const input = document.getElementById('newRaceInput');
+            const name = input.value.trim();
+            if (name && !state.races.includes(name)) {
+                state.races.push(name);
+                state.raceFactions[name] = document.getElementById('newRaceFaction').value;
+                saveState();
+                populateDropdowns();
+                renderRacesList();
+                input.value = '';
+            }
+        }
+
+        function deleteRace(index) {
+            delete state.raceFactions[state.races[index]];
+            state.races.splice(index, 1);
+            saveState();
+            populateDropdowns();
+            renderRacesList();
+        }
+
+        // Picking a race sets its faction automatically (races marked "Either" leave the faction choice to you)
+        function syncFactionFromRace() {
+            const f = raceFaction(document.getElementById('charRace').value);
+            if (f === 'Alliance' || f === 'Horde') document.getElementById('charFaction').value = f;
+            autoFillPvpTitle();
+        }
+
+        // MANAGE CLASSES
+        function openManageClassesModal() {
+            renderClassesList();
+            openModal('manageClassesModal');
+        }
+
+        function renderClassesList() {
+            const container = document.getElementById('classListContainer');
+            container.innerHTML = state.classes.map((c, index) => `
+                <div class="flex items-center justify-between bg-slate-900/80 p-2.5 rounded-lg border border-slate-800 gap-3">
+                    <div class="flex items-center gap-2 flex-1">
+                        ${c.icon ? `<img src="${c.icon}" class="w-6 h-6 rounded border border-slate-700">` : ''}
+                        <span class="text-sm font-bold" style="color: ${c.color}">${c.name}</span>
+                    </div>
+                    <button onclick="deleteClass(${index})" class="text-red-400 hover:text-red-300 text-xs px-2 py-1 rounded bg-red-950/40">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addOrUpdateClass() {
+            const name = document.getElementById('newClassName').value.trim();
+            const color = document.getElementById('newClassColor').value;
+            const icon = document.getElementById('newClassIcon').value.trim();
+
+            if (name) {
+                const existingIndex = state.classes.findIndex(c => c.name.toLowerCase() === name.toLowerCase());
+                if (existingIndex >= 0) {
+                    state.classes[existingIndex] = { name, color, icon };
+                } else {
+                    state.classes.push({ name, color, icon });
+                }
+                saveState();
+                populateDropdowns();
+                renderClassesList();
+                document.getElementById('newClassName').value = '';
+                document.getElementById('newClassIcon').value = '';
+            }
+        }
+
+        function deleteClass(index) {
+            state.classes.splice(index, 1);
+            saveState();
+            populateDropdowns();
+            renderClassesList();
+        }
+
+        // MANAGE CONTENT / ENCOUNTERS
+        function openManageContentModal() {
+            switchContentTab('dungeons');
+            openModal('manageContentModal');
+        }
+
+        function switchContentTab(tab) {
+            state.activeContentTab = tab;
+            ['dungeons', 'raids', 'worldBosses'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tab) {
+                    btn.className = "pb-2 border-b-2 border-wow-gold text-wow-gold px-2 font-bold";
+                } else {
+                    btn.className = "pb-2 text-slate-400 px-2 font-semibold hover:text-slate-200";
+                }
+            });
+            renderContentItemsList();
+        }
+
+        function renderContentItemsList() {
+            const container = document.getElementById('contentItemsList');
+            const items = state.content[state.activeContentTab] || [];
+
+            container.innerHTML = items.map((item, index) => `
+                <div class="flex items-center justify-between bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+                    <span class="text-sm font-semibold text-slate-200">${item}</span>
+                    <button onclick="deleteContentItem(${index})" class="text-red-400 hover:text-red-300 text-xs px-2.5 py-1 rounded bg-red-950/40 border border-red-900/50">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addNewContentItem() {
+            const type = document.getElementById('newContentType').value;
+            const name = document.getElementById('newContentName').value.trim();
+
+            if (name && !state.content[type].includes(name)) {
+                state.content[type].push(name);
+                saveState();
+                document.getElementById('newContentName').value = '';
+                if (state.activeContentTab === type) {
+                    renderContentItemsList();
+                } else {
+                    switchContentTab(type);
+                }
+            }
+        }
+
+        function deleteContentItem(index) {
+            state.content[state.activeContentTab].splice(index, 1);
+            saveState();
+            renderContentItemsList();
+        }
+
+        // CHARACTER MANAGEMENT & MODALS
+        function openAddCharacterModal() {
+            document.getElementById('charId').value = '';
+            document.getElementById('characterForm').reset();
+            syncFactionFromRace();
+            document.getElementById('characterModalTitle').innerHTML = `<i class="fa-solid fa-user-plus"></i> Add New Character`;
+            openModal('characterModal');
+        }
+
+        function openEditCharacterModal(id) {
+            const char = state.characters.find(c => c.id === id);
+            if (!char) return;
+
+            document.getElementById('charId').value = char.id;
+            document.getElementById('charName').value = char.name;
+            document.getElementById('charOwner').value = char.owner || '';
+            document.getElementById('charFaction').value = char.faction;
+            document.getElementById('charRace').value = char.race;
+            document.getElementById('charClass').value = char.className;
+            document.getElementById('charLevel').value = char.level;
+            document.getElementById('charIlvl').value = char.ilvl;
+            document.getElementById('charGuild').value = char.guild || '';
+            document.getElementById('charPvpRankNum').value = char.pvpRankNum || 0;
+            document.getElementById('charPvpRankTitle').value = char.pvpRankTitle || '';
+            document.getElementById('charImageUrl').value = char.imageUrl || '';
+
+            document.getElementById('charProf1').value = char.professions?.[0]?.name || 'None';
+            document.getElementById('charProf1Lvl').value = char.professions?.[0]?.level || '';
+            document.getElementById('charProf2').value = char.professions?.[1]?.name || 'None';
+            document.getElementById('charProf2Lvl').value = char.professions?.[1]?.level || '';
+
+            document.getElementById('charProfCooking').value = char.secondaryProfessions?.cooking || '';
+            document.getElementById('charProfFirstAid').value = char.secondaryProfessions?.firstAid || '';
+            document.getElementById('charProfFishing').value = char.secondaryProfessions?.fishing || '';
+
+            document.getElementById('characterModalTitle').innerHTML = `<i class="fa-solid fa-user-pen"></i> Edit Character`;
+            closeModal('detailModal');
+            openModal('characterModal');
+        }
+
+        // AUTOMATIC IMAGE RESIZING UTILITY (Fixes browser storage limits)
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const maxDim = 500;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > maxDim) {
+                                height = Math.round((height * maxDim) / width);
+                                width = maxDim;
+                            }
+                        } else {
+                            if (height > maxDim) {
+                                width = Math.round((width * maxDim) / height);
+                                height = maxDim;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Compress to lightweight JPEG data
+                        const compressedUrl = canvas.toDataURL('image/jpeg', 0.7);
+                        document.getElementById('charImageUrl').value = compressedUrl;
+                    };
+                    img.src = evt.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveCharacter(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('charId').value || Date.now().toString();
+            const name = document.getElementById('charName').value.trim();
+            const owner = document.getElementById('charOwner').value.trim();
+            const faction = document.getElementById('charFaction').value;
+            const race = document.getElementById('charRace').value;
+            const className = document.getElementById('charClass').value;
+            const level = parseInt(document.getElementById('charLevel').value) || 1;
+            const ilvl = parseInt(document.getElementById('charIlvl').value) || 1;
+            const guild = document.getElementById('charGuild').value.trim();
+            const pvpRankNum = parseInt(document.getElementById('charPvpRankNum').value) || 0;
+            const pvpRankTitle = document.getElementById('charPvpRankTitle').value;
+            const imageUrl = document.getElementById('charImageUrl').value.trim();
+
+            const prof1 = document.getElementById('charProf1').value;
+            const prof1Lvl = parseInt(document.getElementById('charProf1Lvl').value) || 0;
+            const prof2 = document.getElementById('charProf2').value;
+            const prof2Lvl = parseInt(document.getElementById('charProf2Lvl').value) || 0;
+
+            const professions = [];
+            if (prof1 !== 'None') professions.push({ name: prof1, level: prof1Lvl });
+            if (prof2 !== 'None') professions.push({ name: prof2, level: prof2Lvl });
+
+            const secondaryProfessions = {
+                cooking: parseInt(document.getElementById('charProfCooking').value) || 0,
+                firstAid: parseInt(document.getElementById('charProfFirstAid').value) || 0,
+                fishing: parseInt(document.getElementById('charProfFishing').value) || 0
+            };
+
+            const existingIndex = state.characters.findIndex(c => c.id === id);
+            const existingCompletions = existingIndex >= 0 ? state.characters[existingIndex].completedContent || {} : {};
+
+            const characterObj = {
+                id,
+                name,
+                owner,
+                faction,
+                race,
+                className,
+                level,
+                ilvl,
+                guild,
+                pvpRankNum,
+                pvpRankTitle,
+                imageUrl,
+                professions,
+                secondaryProfessions,
+                completedContent: existingCompletions
+            };
+
+            if (existingIndex >= 0) {
+                state.characters[existingIndex] = characterObj;
+            } else {
+                state.characters.push(characterObj);
+            }
+
+            saveState();
+            renderRoster();
+            closeModal('characterModal');
+        }
+
+        function deleteCharacter(id) {
+            if (confirm("Are you sure you want to delete this character?")) {
+                state.characters = state.characters.filter(c => c.id !== id);
+                saveState();
+                renderRoster();
+                closeModal('detailModal');
+            }
+        }
+
+        // VIEW MODE SWITCHING
+        function setViewMode(mode) {
+            state.viewMode = mode;
+            localStorage.setItem('wow_view_mode', mode);
+            renderRoster();
+        }
+
+        // ROSTER RENDERING
+        function renderRoster() {
+            const container = document.getElementById('rosterContainer');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const faction = document.getElementById('factionFilter').value;
+            const cls = document.getElementById('classFilter').value;
+            const sortBy = document.getElementById('sortBy').value;
+
+            // Highlight View Switcher Buttons
+            const gridBtn = document.getElementById('viewGridBtn');
+            const tableBtn = document.getElementById('viewTableBtn');
+            if (state.viewMode === 'grid') {
+                gridBtn.className = "px-3 py-1.5 rounded-md text-xs font-bold bg-amber-500 text-slate-950 shadow";
+                tableBtn.className = "px-3 py-1.5 rounded-md text-xs font-semibold text-slate-400 hover:text-white";
+            } else {
+                tableBtn.className = "px-3 py-1.5 rounded-md text-xs font-bold bg-amber-500 text-slate-950 shadow";
+                gridBtn.className = "px-3 py-1.5 rounded-md text-xs font-semibold text-slate-400 hover:text-white";
+            }
+
+            // Filter logic
+            let filtered = state.characters.filter(c => {
+                const matchesSearch = c.name.toLowerCase().includes(search) || (c.owner && c.owner.toLowerCase().includes(search));
+                const matchesFaction = faction === 'ALL' || c.faction === faction;
+                const matchesClass = cls === 'ALL' || c.className === cls;
+                return matchesSearch && matchesFaction && matchesClass;
+            });
+
+            // Sorting logic
+            filtered.sort((a, b) => {
+                if (sortBy === 'name-asc') return a.name.localeCompare(b.name);
+                if (sortBy === 'level-desc') return b.level - a.level;
+                if (sortBy === 'ilvl-desc') return b.ilvl - a.ilvl;
+                if (sortBy === 'class-asc') return a.className.localeCompare(b.className);
+                if (sortBy === 'faction-asc') return a.faction.localeCompare(b.faction);
+                return 0;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-wow-panel border border-wow-panelBorder rounded-2xl p-12 text-center my-8">
+                        <i class="fa-solid fa-users-slash text-4xl text-slate-600 mb-3"></i>
+                        <h3 class="text-lg font-bold text-slate-300 font-cinzel">No Characters Found</h3>
+                        <p class="text-sm text-slate-500 max-w-md mx-auto mt-1">Try adjusting your filters or click "Add Character" to populate the roster.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (state.viewMode === 'grid') {
+                renderGridRoster(filtered, container);
+            } else {
+                renderTableRoster(filtered, container);
+            }
+        }
+
+        function renderGridRoster(characters, container) {
+            container.innerHTML = `
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                    ${characters.map(c => {
+                        const classObj = state.classes.find(cl => cl.name === c.className) || { color: '#FFB800', icon: '' };
+                        const isAlliance = c.faction === 'Alliance';
+                        
+                        const rankBadge = c.pvpRankNum > 0 ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-purple-950/90 text-purple-300 border border-purple-700/50 backdrop-blur-sm">R${c.pvpRankNum}</span>` : '';
+
+                        return `
+                            <div onclick="openCharacterDetail('${c.id}')" class="wow-card bg-wow-card border border-wow-panelBorder rounded-2xl overflow-hidden cursor-pointer flex flex-col relative group">
+
+                                <!-- Banner (picture is cropped to fit, never stretches the card) -->
+                                <div class="h-28 w-full overflow-hidden relative ${isAlliance ? 'bg-gradient-to-br from-blue-950 via-slate-900 to-slate-950' : 'bg-gradient-to-br from-red-950 via-slate-900 to-slate-950'}">
+                                    ${c.imageUrl ? `<img src="${c.imageUrl}" alt="" onerror="this.remove()" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">` : ''}
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30"></div>
+                                    <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider backdrop-blur-sm ${isAlliance ? 'bg-blue-950/90 text-blue-300 border border-blue-700/60' : 'bg-red-950/90 text-red-300 border border-red-700/60'}">${c.faction}</span>
+                                    <div class="absolute top-2.5 right-2.5 flex items-center gap-1.5">
+                                        <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-950/90 text-amber-400 border border-slate-700/80 backdrop-blur-sm">Lvl ${c.level}</span>
+                                        <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-950/90 text-slate-200 border border-slate-700/80 backdrop-blur-sm">${c.ilvl} iLvl</span>
+                                        ${rankBadge}
+                                    </div>
+                                </div>
+
+                                <div class="p-4 space-y-3 flex-1">
+                                    <div class="flex items-center gap-3">
+                                        ${classObj.icon ? `<img src="${classObj.icon}" class="w-11 h-11 rounded-lg border border-slate-700 shrink-0">` : ''}
+                                        <div class="min-w-0">
+                                            <h3 class="text-xl font-bold font-cinzel tracking-wide truncate" style="color: ${classObj.color}">${c.name}</h3>
+                                            <p class="text-xs font-medium text-slate-400 truncate">${c.race} ${c.className}</p>
+                                        </div>
+                                    </div>
+                                    ${c.guild ? `<p class="text-xs font-semibold text-amber-400 truncate"><i class="fa-solid fa-users mr-1.5 text-amber-500/80"></i>&lt;${c.guild}&gt;</p>` : ''}
+                                </div>
+
+                                <!-- Footer -->
+                                <div class="mx-4 mb-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs font-semibold">
+                                    <span class="text-slate-500 truncate pr-2"><i class="fa-solid fa-user mr-1.5"></i>${c.owner || 'Unknown'}</span>
+                                    <span class="text-slate-300 whitespace-nowrap">Details <i class="fa-solid fa-chevron-right text-[10px] ml-0.5"></i></span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function renderTableRoster(characters, container) {
+            container.innerHTML = `
+                <div class="bg-wow-panel border border-wow-panelBorder rounded-2xl overflow-x-auto shadow-xl">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-300">
+                        <thead class="bg-slate-900/90 text-wow-gold uppercase text-[11px] font-bold tracking-wider border-b border-wow-panelBorder">
+                            <tr>
+                                <th class="p-4">Character</th>
+                                <th class="p-4">Played By</th>
+                                <th class="p-4">Race & Class</th>
+                                <th class="p-4">Faction</th>
+                                <th class="p-4">Level</th>
+                                <th class="p-4">iLvl</th>
+                                <th class="p-4">PvP Rank</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800">
+                            ${characters.map(c => {
+                                const classObj = state.classes.find(cl => cl.name === c.className) || { color: '#FFB800' };
+                                return `
+                                    <tr onclick="openCharacterDetail('${c.id}')" class="hover:bg-slate-800/50 cursor-pointer transition">
+                                        <td class="p-4 font-bold font-cinzel text-base" style="color: ${classObj.color}">${c.name}</td>
+                                        <td class="p-4 font-semibold text-amber-400">${c.owner || '-'}</td>
+                                        <td class="p-4 font-medium">${c.race} ${c.className}</td>
+                                        <td class="p-4">
+                                            <span class="font-bold ${c.faction === 'Alliance' ? 'text-blue-400' : 'text-red-400'}">${c.faction}</span>
+                                        </td>
+                                        <td class="p-4 font-bold text-slate-200">${c.level}</td>
+                                        <td class="p-4 font-bold text-amber-400">${c.ilvl}</td>
+                                        <td class="p-4 font-medium">${c.pvpRankNum > 0 ? `Rank ${c.pvpRankNum} (${c.pvpRankTitle})` : 'Unranked'}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // FULL CHARACTER PORTFOLIO & DETAILS MODAL
+        function openCharacterDetail(id) {
+            const c = state.characters.find(char => char.id === id);
+            if (!c) return;
+
+            const classObj = state.classes.find(cl => cl.name === c.className) || { color: '#FFB800', icon: '' };
+            const isAlliance = c.faction === 'Alliance';
+
+            // Build Primary Professions HTML with WoW Icons & Skill Bars
+            const primProfsHTML = (c.professions && c.professions.length > 0)
+                ? c.professions.map(p => {
+                    const iconUrl = PROFESSION_ICONS[p.name] || 'https://wow.zamimg.com/images/wow/icons/large/trade_engineering.jpg';
+                    const pct = Math.min(100, Math.round((p.level / 300) * 100));
+                    return `
+                        <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex items-center gap-3">
+                            <img src="${iconUrl}" class="w-10 h-10 rounded-lg border border-slate-700 shadow-md">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center text-xs font-bold mb-1">
+                                    <span class="text-slate-200">${p.name}</span>
+                                    <span class="text-amber-400">${p.level} / 300</span>
+                                </div>
+                                <div class="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-800">
+                                    <div class="bg-gradient-to-r from-amber-500 to-wow-gold h-full rounded-full" style="width: ${pct}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('')
+                : `<p class="text-xs text-slate-500 italic col-span-2">No primary professions learned</p>`;
+
+            // Build Secondary Professions HTML
+            const secProfs = c.secondaryProfessions || {};
+            const secondaryList = [
+                { name: 'Cooking', lvl: secProfs.cooking || 0, icon: PROFESSION_ICONS['Cooking'] },
+                { name: 'First Aid', lvl: secProfs.firstAid || 0, icon: PROFESSION_ICONS['First Aid'] },
+                { name: 'Fishing', lvl: secProfs.fishing || 0, icon: PROFESSION_ICONS['Fishing'] }
+            ];
+
+            const secProfsHTML = secondaryList.map(s => {
+                const pct = Math.min(100, Math.round((s.lvl / 300) * 100));
+                return `
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 flex items-center gap-2.5">
+                        <img src="${s.icon}" class="w-8 h-8 rounded-lg border border-slate-700">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-center text-[11px] font-bold mb-1">
+                                <span class="text-slate-300">${s.name}</span>
+                                <span class="text-amber-400">${s.lvl}/300</span>
+                            </div>
+                            <div class="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden border border-slate-800">
+                                <div class="bg-amber-500 h-full rounded-full" style="width: ${pct}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const contentHTML = `
+                <div>
+                    <!-- Banner header (picture is cropped to fit, never pushes the page around) -->
+                    <div class="relative h-56 sm:h-64 overflow-hidden ${isAlliance ? 'bg-gradient-to-br from-blue-950 via-slate-900 to-slate-950' : 'bg-gradient-to-br from-red-950 via-slate-900 to-slate-950'}">
+                        ${c.imageUrl ? `<img src="${c.imageUrl}" alt="" onerror="this.remove()" class="absolute inset-0 w-full h-full object-cover">` : ''}
+                        <div class="absolute inset-0 bg-gradient-to-t from-wow-panel via-wow-panel/50 to-black/20"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                            <div class="flex items-center gap-4 min-w-0">
+                                ${classObj.icon ? `<img src="${classObj.icon}" class="w-16 h-16 rounded-xl border-2 border-wow-gold shadow-lg shrink-0">` : ''}
+                                <div class="min-w-0">
+                                    <h2 class="text-3xl sm:text-4xl font-black font-cinzel truncate" style="color: ${classObj.color}">${c.name}</h2>
+                                    <p class="text-sm text-slate-300 mt-1 font-medium">
+                                        ${c.race} ${c.className}${c.guild ? ` &bull; &lt;${c.guild}&gt;` : ''}
+                                    </p>
+                                </div>
+                            </div>
+                            ${state.isAdmin ? `
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <button onclick="openEditCharacterModal('${c.id}')" class="px-3.5 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-wow-gold border border-amber-500/40 rounded-lg text-xs font-bold flex items-center gap-1.5 backdrop-blur-sm">
+                                        <i class="fa-solid fa-pen"></i> Edit
+                                    </button>
+                                    <button onclick="deleteCharacter('${c.id}')" class="px-3.5 py-1.5 bg-red-950/80 hover:bg-red-900 text-red-300 border border-red-800/60 rounded-lg text-xs font-bold flex items-center gap-1.5 backdrop-blur-sm">
+                                        <i class="fa-solid fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+
+                <div class="p-6 space-y-6">
+                    <!-- Core Stats Grid -->
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-center">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Faction</span>
+                            <p class="text-sm font-bold ${isAlliance ? 'text-blue-400' : 'text-red-400'} mt-1 uppercase">${c.faction}</p>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-center">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Level</span>
+                            <p class="text-lg font-black text-amber-400 mt-0.5">Lvl ${c.level}</p>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-center">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Item Level</span>
+                            <p class="text-lg font-black text-slate-200 mt-0.5">${c.ilvl} iLvl</p>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-center">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">PvP Rank</span>
+                            <p class="text-sm font-bold text-purple-300 mt-1">${c.pvpRankNum > 0 ? `Rank ${c.pvpRankNum}${c.pvpRankTitle ? ' - ' + c.pvpRankTitle : ''}` : 'Unranked'}</p>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-center col-span-2 sm:col-span-1">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Played By</span>
+                            <p class="text-sm font-bold text-slate-200 mt-1">${c.owner || 'Unknown'}</p>
+                        </div>
+                    </div>
+
+                    <!-- Professions Section -->
+                    <div class="space-y-3">
+                        <h3 class="text-sm font-bold font-cinzel text-wow-gold uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-hammer text-amber-400"></i> Primary & Secondary Professions
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            ${primProfsHTML}
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                            ${secProfsHTML}
+                        </div>
+                    </div>
+
+                    <!-- Encounters & Completion Tracker -->
+                    <div class="space-y-4 pt-2">
+                        <h3 class="text-sm font-bold font-cinzel text-wow-gold uppercase tracking-wider flex items-center gap-2 border-b border-slate-800 pb-2">
+                            <i class="fa-solid fa-dungeon text-red-400"></i> Dungeons & Raid Completion
+                        </h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Dungeons Column -->
+                            <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
+                                <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">Dungeons</h4>
+                                <div class="max-h-48 overflow-y-auto space-y-1.5 pr-1">
+                                    ${renderContentChecklist(c, 'dungeons')}
+                                </div>
+                            </div>
+
+                            <!-- Raids Column -->
+                            <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
+                                <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">Raids</h4>
+                                <div class="max-h-48 overflow-y-auto space-y-1.5 pr-1">
+                                    ${renderContentChecklist(c, 'raids')}
+                                </div>
+                            </div>
+
+                            <!-- World Bosses Column -->
+                            <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
+                                <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">World Bosses</h4>
+                                <div class="max-h-48 overflow-y-auto space-y-1.5 pr-1">
+                                    ${renderContentChecklist(c, 'worldBosses')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            `;
+
+            document.getElementById('detailModalContent').innerHTML = contentHTML;
+            openModal('detailModal');
+        }
+
+        // CONTENT CHECKLIST RENDERER & TOGGLE
+        function renderContentChecklist(character, category) {
+            const items = state.content[category] || [];
+            if (items.length === 0) return `<p class="text-xs text-slate-500 italic">No items listed</p>`;
+
+            return items.map(itemName => {
+                const isCompleted = character.completedContent?.[category]?.[itemName] || false;
+                
+                // Escape quotes safely for onclick handler
+                const safeItemName = itemName.replace(/'/g, "\\'");
+
+                return `
+                    <label class="flex items-center justify-between p-1.5 rounded hover:bg-slate-800/80 cursor-pointer text-xs font-medium ${isCompleted ? 'text-emerald-400 font-semibold' : 'text-slate-400'}">
+                        <span class="truncate pr-2">${itemName}</span>
+                        <input type="checkbox" ${isCompleted ? 'checked' : ''} ${!state.isAdmin ? 'disabled' : ''} 
+                            onchange="toggleContentCompletion('${character.id}', '${category}', '${safeItemName}', this.checked)"
+                            class="rounded border-slate-700 bg-slate-900 text-amber-500 focus:ring-0 cursor-pointer disabled:opacity-50">
+                    </label>
+                `;
+            }).join('');
+        }
+
+        function toggleContentCompletion(charId, category, itemName, isChecked) {
+            const char = state.characters.find(c => c.id === charId);
+            if (!char) return;
+
+            if (!char.completedContent) char.completedContent = {};
+            if (!char.completedContent[category]) char.completedContent[category] = {};
+
+            char.completedContent[category][itemName] = isChecked;
+            saveState();
+            openCharacterDetail(charId); // Refresh details view
+        }
+
+        // EXPORT & IMPORT DATA
+        function exportData() {
+            const publicData = { header: state.header, races: state.races, raceFactions: state.raceFactions, classes: state.classes, content: state.content, characters: state.characters };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(publicData, null, 2));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "roster.json");
+            document.body.appendChild(dlAnchorElem);
+            dlAnchorElem.click();
+            dlAnchorElem.remove();
+        }
+
+        function importData(event) {
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.characters) state.characters = imported.characters;
+                    if (imported.races) state.races = imported.races;
+                    if (imported.raceFactions) state.raceFactions = imported.raceFactions;
+                    if (imported.classes) state.classes = imported.classes;
+                    if (imported.content) state.content = imported.content;
+                    if (imported.header) state.header = imported.header;
+
+                    saveState();
+                    applyHeader();
+                    populateDropdowns();
+                    renderRoster();
+                    alert("Roster data imported successfully!");
+                } catch (err) {
+                    alert("Error importing file. Make sure it is a valid backup JSON file.");
+                }
+            };
+            fileReader.readAsText(event.target.files[0]);
+        }
+    </script>
+</body>
+</html><script async src="/.netlify/scripts/hud?variant=owner-private" data-nf-variant="owner-private" data-netlify-site-id="5b278950-2e80-402d-bfb3-415662971788" data-app-host="app.netlify.com"></script>

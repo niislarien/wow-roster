@@ -535,7 +535,7 @@
 
     <!-- ZONE EDIT MODAL -->
     <div id="zoneModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-md rounded-2xl p-6 shadow-2xl relative">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-2xl p-6 shadow-2xl relative">
             <h2 id="zoneModalTitle" class="text-xl font-bold font-cinzel text-wow-gold mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot"></i> Zone
             </h2>
@@ -567,11 +567,91 @@
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Notes (optional)</label>
                     <input type="text" id="zoneNotes" placeholder="Starting zone, good quests, dungeon nearby..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
                 </div>
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold text-slate-300">Towns &amp; cities in this zone</label>
+                        <button type="button" onclick="addTownRow()" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-wow-gold rounded-md text-xs font-semibold"><i class="fa-solid fa-plus"></i> Add</button>
+                    </div>
+                    <div id="zoneTownsEditor" class="space-y-2"></div>
+                </div>
                 <div class="flex justify-end gap-2 pt-2">
                     <button type="button" onclick="closeModal('zoneModal')" class="px-3.5 py-2 bg-slate-800 text-slate-300 rounded-lg text-xs font-semibold">Cancel</button>
                     <button type="submit" class="px-4 py-2 bg-wow-gold hover:bg-amber-500 text-slate-950 font-bold rounded-lg text-xs">Save Zone</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+
+    <!-- ZONE DETAIL MODAL (towns & cities) -->
+    <div id="zoneDetailModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-2xl p-6 shadow-2xl relative panel-deco">
+            <button onclick="closeModal('zoneDetailModal')" class="absolute top-3 right-4 text-slate-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            <div id="zoneDetailBody"></div>
+        </div>
+    </div>
+
+    <!-- DUNGEON MODAL -->
+    <div id="dungeonModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-md rounded-2xl p-6 shadow-2xl relative">
+            <h2 id="dungeonModalTitle" class="text-xl font-bold font-cinzel text-wow-gold mb-4 flex items-center gap-2"></h2>
+            <form onsubmit="saveDungeon(event)" class="space-y-3">
+                <input type="hidden" id="dungeonId">
+                <div><label class="block text-xs font-semibold text-slate-300 mb-1">Dungeon name</label>
+                    <input type="text" id="dungeonName" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"></div>
+                <div><label class="block text-xs font-semibold text-slate-300 mb-1">Located in (zone)</label>
+                    <input type="text" id="dungeonZone" placeholder="Leave blank for TBD" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block text-xs font-semibold text-slate-300 mb-1">Min level</label>
+                        <input type="number" id="dungeonMin" min="1" max="80" placeholder="TBD" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"></div>
+                    <div><label class="block text-xs font-semibold text-slate-300 mb-1">Max level</label>
+                        <input type="number" id="dungeonMax" min="1" max="80" placeholder="TBD" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"></div>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('dungeonModal')" class="px-3.5 py-2 bg-slate-800 text-slate-300 rounded-lg text-xs font-semibold">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-wow-gold hover:bg-amber-500 text-slate-950 font-bold rounded-lg text-xs">Save Dungeon</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- RAID EDIT MODAL -->
+    <div id="raidModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-2xl p-6 shadow-2xl relative">
+            <h2 id="raidModalTitle" class="text-xl font-bold font-cinzel text-wow-gold mb-4 flex items-center gap-2"></h2>
+            <form onsubmit="saveRaid(event)" class="space-y-3">
+                <input type="hidden" id="raidId">
+                <div><label class="block text-xs font-semibold text-slate-300 mb-1">Raid name</label>
+                    <input type="text" id="raidName" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"></div>
+                <div><label class="block text-xs font-semibold text-slate-300 mb-1">Located in (zone)</label>
+                    <input type="text" id="raidZone" placeholder="Leave blank for TBD" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block text-xs font-semibold text-slate-300 mb-1">Min level</label>
+                        <input type="number" id="raidMin" min="1" max="80" placeholder="TBD" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"></div>
+                    <div><label class="block text-xs font-semibold text-slate-300 mb-1">Max level</label>
+                        <input type="number" id="raidMax" min="1" max="80" placeholder="TBD" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block text-xs font-semibold text-slate-300 mb-1">Players needed</label>
+                        <input type="text" id="raidPlayers" placeholder="e.g. 20, 40 (blank = TBD)" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"></div>
+                    <div><label class="block text-xs font-semibold text-slate-300 mb-1">Attunement required?</label>
+                        <select id="raidAttune" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"><option value="Yes">Yes</option><option value="No">No</option><option value="TBD">TBD</option></select></div>
+                </div>
+                <div><label class="block text-xs font-semibold text-slate-300 mb-1">Tier sets (which pieces drop)</label>
+                    <textarea id="raidTier" rows="4" placeholder="e.g. Tier 1 - Helm and Shoulders drop from the first two bosses. Leave blank if there is no tier set." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold"></textarea></div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('raidModal')" class="px-3.5 py-2 bg-slate-800 text-slate-300 rounded-lg text-xs font-semibold">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-wow-gold hover:bg-amber-500 text-slate-950 font-bold rounded-lg text-xs">Save Raid</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- RAID DETAIL MODAL -->
+    <div id="raidDetailModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-2xl p-6 shadow-2xl relative panel-deco">
+            <button onclick="closeModal('raidDetailModal')" class="absolute top-3 right-4 text-slate-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            <div id="raidDetailBody"></div>
         </div>
     </div>
 
@@ -672,6 +752,78 @@
             { id: 'z-silithus', name: 'Silithus', min: 55, max: 60, faction: 'Contested', notes: '' }
         ];
 
+        // TOWNS & CITIES per zone: [name, type (City/Town), faction (Alliance/Horde/Neutral)]
+        const DEFAULT_TOWNS = {
+            'z-elwynn': [['Stormwind City','City','Alliance'],['Goldshire','Town','Alliance'],['Northshire Abbey','Town','Alliance'],['Eastvale Logging Camp','Town','Alliance']],
+            'z-dunmorogh': [['Ironforge','City','Alliance'],['Kharanos','Town','Alliance'],['Anvilmar','Town','Alliance']],
+            'z-teldrassil': [['Darnassus','City','Alliance'],['Dolanaar','Town','Alliance'],['Shadowglen','Town','Alliance']],
+            'z-darkshore': [['Auberdine','Town','Alliance']],
+            'z-lochmodan': [['Thelsamar','Town','Alliance']],
+            'z-westfall': [['Sentinel Hill','Town','Alliance']],
+            'z-redridge': [['Lakeshire','Town','Alliance']],
+            'z-duskwood': [['Darkshire','Town','Alliance']],
+            'z-wetlands': [['Menethil Harbor','Town','Alliance']],
+            'z-durotar': [['Orgrimmar','City','Horde'],['Razor Hill','Town','Horde'],["Sen'jin Village",'Town','Horde']],
+            'z-mulgore': [['Thunder Bluff','City','Horde'],['Bloodhoof Village','Town','Horde']],
+            'z-tirisfal': [['Undercity','City','Horde'],['Brill','Town','Horde']],
+            'z-silverpine': [['The Sepulcher','Town','Horde']],
+            'z-barrens': [['The Crossroads','Town','Horde'],['Camp Taurajo','Town','Horde'],['Ratchet','Town','Neutral']],
+            'z-stonetalon': [['Sun Rock Retreat','Town','Horde']],
+            'z-ashenvale': [['Astranaar','Town','Alliance'],['Splintertree Post','Town','Horde'],["Zoram'gar Outpost",'Town','Horde']],
+            'z-hillsbrad': [['Southshore','Town','Alliance'],['Tarren Mill','Town','Horde']],
+            'z-thousandneedles': [['Freewind Post','Town','Horde']],
+            'z-arathi': [['Refuge Pointe','Town','Alliance'],['Hammerfall','Town','Horde']],
+            'z-desolace': [["Nijel's Point",'Town','Alliance'],['Shadowprey Village','Town','Horde']],
+            'z-stranglethorn': [['Booty Bay','Town','Neutral'],["Grom'gol Base Camp",'Town','Horde'],['Rebel Camp','Town','Alliance']],
+            'z-dustwallow': [['Theramore Isle','Town','Alliance'],['Brackenwall Village','Town','Horde']],
+            'z-badlands': [['Kargath','Town','Horde']],
+            'z-swamp': [['Stonard','Town','Horde']],
+            'z-feralas': [['Feathermoon Stronghold','Town','Alliance'],['Camp Mojache','Town','Horde']],
+            'z-hinterlands': [['Aerie Peak','Town','Alliance'],['Revantusk Village','Town','Horde']],
+            'z-tanaris': [['Gadgetzan','Town','Neutral']],
+            'z-searing': [['Thorium Point','Town','Neutral']],
+            'z-azshara': [['Valormok','Town','Horde']],
+            'z-blasted': [['Nethergarde Keep','Town','Alliance']],
+            'z-felwood': [['Emerald Sanctuary','Town','Neutral']],
+            'z-ungoro': [["Marshal's Refuge",'Town','Neutral']],
+            'z-burning': [["Morgan's Vigil",'Town','Alliance'],['Flame Crest','Town','Horde']],
+            'z-wpl': [['Chillwind Camp','Town','Alliance']],
+            'z-epl': [["Light's Hope Chapel",'Town','Neutral']],
+            'z-winterspring': [['Everlook','Town','Neutral']],
+            'z-silithus': [['Cenarion Hold','Town','Neutral']]
+        };
+        function migrateZones(zones) {
+            (zones || []).forEach(z => {
+                if (!Array.isArray(z.towns)) {
+                    z.towns = (DEFAULT_TOWNS[z.id] || []).map(([name, type, faction]) => ({ name, type, faction }));
+                }
+            });
+            return zones;
+        }
+
+        // DUNGEON GUIDE: [name, zone, minLevel, maxLevel]  (blank = TBD, edit in admin mode)
+        const DEFAULT_DUNGEON_GUIDE = [
+            ['Ragefire Chasm','Orgrimmar',13,18],['Hall of Thanes','','',''],['Ruins of Lordaeron','','',''],
+            ['Wailing Caverns','The Barrens',15,25],['Deadmines','Westfall',18,23],['Shadowfang Keep','Silverpine Forest',22,30],
+            ['Blackfathom Deeps','Ashenvale',24,32],['Stormwind Stockades','Stormwind City',24,32],['Excavation Site: Wetlands','Wetlands','',''],
+            ['City of Dalaran','','',''],['Gnomeregan','Dun Morogh',29,38],['Razorfen Kraul','The Barrens',30,40],
+            ['Scarlet Monastery - Graveyard','Tirisfal Glades',26,36],['Scarlet Monastery - Library','Tirisfal Glades',29,39],['The Drowned City','','',''],
+            ['Scarlet Monastery - Armory','Tirisfal Glades',32,42],['Razorfen Downs','The Barrens',40,50],['Scarlet Monastery - Cathedral','Tirisfal Glades',35,45],
+            ["Krol'dok Stronghold",'','',''],['Uldaman','Badlands',41,51],["Zul'Farrak",'Tanaris',44,54],['Maraudon','Desolace',46,55],
+            ['Alcaz Island Prison','','',''],['Sunken Temple','Swamp of Sorrows',50,60],['Blackrock Depths','Searing Gorge',52,60],
+            ['Dire Maul (East)','Feralas',55,60],['Blackmaw Hold','','',''],['Lower Blackrock Spire','Burning Steppes',55,60],
+            ['Dire Maul (North)','Feralas',57,60],['Dire Maul (West)','Feralas',57,60],['Scholomance','Western Plaguelands',58,60],
+            ["Shaper's Terrace",'','',''],['Stratholme (Main Gate)','Eastern Plaguelands',58,60],['Stratholme (Service Gate)','Eastern Plaguelands',58,60],
+            ['Upper Blackrock Spire','Burning Steppes',58,60]
+        ].map((d, i) => ({ id: 'd-' + i, name: d[0], zone: d[1], min: d[2], max: d[3] }));
+
+        // RAID GUIDE
+        const DEFAULT_RAID_GUIDE = [
+            { id: 'r-0', name: 'Barrow Deeps', zone: '', min: '', max: '', players: '', tierSets: '', attunement: 'TBD' },
+            { id: 'r-1', name: 'Hyjal Summit', zone: 'Mount Hyjal', min: 60, max: 60, players: '', tierSets: '', attunement: 'TBD' },
+            { id: 'r-2', name: "Onyxia's Lair", zone: 'Dustwallow Marsh', min: 60, max: 60, players: '', tierSets: '', attunement: 'TBD' }
+        ];
+
         let state = {
             isAdmin: false,
             adminPasscode: localStorage.getItem('wow_admin_passcode') || DEFAULT_PASSCODE,
@@ -686,8 +838,11 @@
             classes: JSON.parse(localStorage.getItem('wow_classes')) || DEFAULT_CLASSES,
             content: JSON.parse(localStorage.getItem('wow_content')) || DEFAULT_CONTENT,
             characters: JSON.parse(localStorage.getItem('wow_characters')) || [],
-            zones: JSON.parse(localStorage.getItem('wow_zones')) || DEFAULT_ZONES.map(z => ({ ...z }))
+            zones: JSON.parse(localStorage.getItem('wow_zones')) || DEFAULT_ZONES.map(z => ({ ...z })),
+            guideDungeons: JSON.parse(localStorage.getItem('wow_guide_dungeons')) || DEFAULT_DUNGEON_GUIDE.map(d => ({ ...d })),
+            guideRaids: JSON.parse(localStorage.getItem('wow_guide_raids')) || DEFAULT_RAID_GUIDE.map(r => ({ ...r }))
         };
+        migrateZones(state.zones);
 
         // INITIALIZATION
         window.addEventListener('DOMContentLoaded', async () => {
@@ -794,7 +949,9 @@
                         if (Array.isArray(d.classes)) state.classes = d.classes;
                         if (d.content) state.content = d.content;
                         if (d.header) state.header = d.header;
-                        if (Array.isArray(d.zones)) state.zones = d.zones;
+                        if (Array.isArray(d.zones)) state.zones = migrateZones(d.zones);
+                        if (Array.isArray(d.guideDungeons)) state.guideDungeons = d.guideDungeons;
+                        if (Array.isArray(d.guideRaids)) state.guideRaids = d.guideRaids;
                     }
                 } catch (e) { console.warn('roster.json not loaded, using local data', e); }
             }
@@ -809,7 +966,7 @@
 
         function discardDraft() {
             if (!confirm('Discard the changes saved in this browser and reload the published roster?')) return;
-            try { ['wow_dirty','wow_characters','wow_races','wow_race_factions','wow_classes','wow_content','wow_header','wow_zones'].forEach(k => localStorage.removeItem(k)); } catch (e) {}
+            try { ['wow_dirty','wow_characters','wow_races','wow_race_factions','wow_classes','wow_content','wow_header','wow_zones','wow_guide_dungeons','wow_guide_raids'].forEach(k => localStorage.removeItem(k)); } catch (e) {}
             location.reload();
         }
 
@@ -837,7 +994,7 @@
         }, true);
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') ['detailModal','characterModal','zoneModal'].forEach(id => closeModal(id));
+            if (e.key === 'Escape') ['detailModal','characterModal','zoneModal','zoneDetailModal','dungeonModal','raidModal','raidDetailModal'].forEach(id => closeModal(id));
         });
 
         // PERSISTENCE HELPER (SAFE TRY/CATCH PREVENTS QUOTA EXCEEDED ERRORS)
@@ -850,6 +1007,8 @@
                 localStorage.setItem('wow_characters', JSON.stringify(state.characters));
                 localStorage.setItem('wow_header', JSON.stringify(state.header));
                 localStorage.setItem('wow_zones', JSON.stringify(state.zones));
+                localStorage.setItem('wow_guide_dungeons', JSON.stringify(state.guideDungeons));
+                localStorage.setItem('wow_guide_raids', JSON.stringify(state.guideRaids));
                 localStorage.setItem('wow_dirty', '1');
                 renderDraftBanner();
             } catch (err) {
@@ -1377,7 +1536,6 @@
                                     <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider backdrop-blur-sm ${isAlliance ? 'bg-blue-950/90 text-blue-300 border border-blue-700/60' : 'bg-red-950/90 text-red-300 border border-red-700/60'}">${c.faction}</span>
                                     <div class="absolute top-2.5 right-2.5 flex items-center gap-1.5">
                                         <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-950/90 text-amber-400 border border-slate-700/80 backdrop-blur-sm">Lvl ${c.level}</span>
-                                        <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-950/90 text-slate-200 border border-slate-700/80 backdrop-blur-sm">${c.ilvl} iLvl</span>
                                         ${rankBadge}
                                     </div>
                                 </div>
@@ -1413,7 +1571,8 @@
                             <tr>
                                 <th class="p-4">Character</th>
                                 <th class="p-4">Played By</th>
-                                <th class="p-4">Race & Class</th>
+                                <th class="p-4">Race</th>
+                                <th class="p-4">Class</th>
                                 <th class="p-4">Faction</th>
                                 <th class="p-4">Level</th>
                                 <th class="p-4">iLvl</th>
@@ -1422,12 +1581,17 @@
                         </thead>
                         <tbody class="divide-y divide-slate-800">
                             ${characters.map(c => {
-                                const classObj = state.classes.find(cl => cl.name === c.className) || { color: '#FFB800' };
+                                const classObj = state.classes.find(cl => cl.name === c.className) || { color: '#FFB800', icon: '' };
                                 return `
                                     <tr onclick="openCharacterDetail('${c.id}')" class="hover:bg-slate-800/50 cursor-pointer transition">
                                         <td class="p-4 font-bold font-cinzel text-base" style="color: ${classObj.color}">${c.name}</td>
                                         <td class="p-4 font-semibold text-amber-400">${c.owner || '-'}</td>
-                                        <td class="p-4 font-medium">${c.race} ${c.className}</td>
+                                        <td class="p-4 font-medium">${c.race}</td>
+                                        <td class="p-4">
+                                            <span class="inline-flex items-center gap-2 font-bold" style="color: ${classObj.color}">
+                                                ${classObj.icon ? `<img src="${classObj.icon}" alt="" onerror="this.remove()" class="w-5 h-5 rounded border border-slate-700 shrink-0">` : ''}${c.className}
+                                            </span>
+                                        </td>
                                         <td class="p-4">
                                             <span class="font-bold ${c.faction === 'Alliance' ? 'text-blue-400' : 'text-red-400'}">${c.faction}</span>
                                         </td>
@@ -1644,7 +1808,9 @@
         // GUIDES TAB (sub-tabs) -------------------------------------------------
         // To add another guide later: add one entry here and a render function for it.
         const GUIDE_TABS = [
-            { id: 'zones', label: 'Leveling Zones', icon: 'fa-map-location-dot', render: renderZonesGuide }
+            { id: 'zones', label: 'Leveling Zones', icon: 'fa-map-location-dot', render: renderZonesGuide },
+            { id: 'dungeons', label: 'Dungeons', icon: 'fa-dungeon', render: renderDungeonsGuide },
+            { id: 'raids', label: 'Raids', icon: 'fa-dragon', render: renderRaidsGuide }
         ];
         let activeGuideId = 'zones';
         let zoneFilter = 'ALL';
@@ -1731,7 +1897,7 @@
                 const width = Math.max(2, ((z.max - z.min + 1) / scaleMax) * 100);
                 const here = lvl && lvl >= z.min && lvl <= z.max;
                 return `
-                    <div class="wow-card rounded-xl border ${here ? 'border-amber-300 ring-2 ring-amber-300/40 bg-slate-800/90' : 'border-slate-700 bg-slate-900/70'} p-3.5">
+                    <div onclick="openZoneDetail('${z.id}')" class="wow-card cursor-pointer rounded-xl border ${here ? 'border-amber-300 ring-2 ring-amber-300/40 bg-slate-800/90' : 'border-slate-700 bg-slate-900/70'} p-3.5">
                         <div class="flex items-start justify-between gap-2">
                             <div class="min-w-0">
                                 <p class="font-bold text-slate-100 truncate">${escHtml(z.name)}</p>
@@ -1743,10 +1909,14 @@
                             <div class="absolute top-0 h-full rounded-full" style="left:${left}%;width:${width}%;background:linear-gradient(90deg, ${st.color}99, ${st.color})"></div>
                             ${lvl ? `<div class="absolute top-0 h-full w-0.5 bg-white" style="left:${Math.min(99, ((lvl - 1) / scaleMax) * 100)}%"></div>` : ''}
                         </div>
+                        <p class="text-[11px] text-slate-400 mt-2.5 flex items-center gap-1.5">
+                            <i class="fa-solid fa-house-flag text-wow-gold/80"></i> ${(z.towns || []).length} town${(z.towns || []).length === 1 ? '' : 's'} &amp; cities
+                            <i class="fa-solid fa-chevron-right text-[9px] ml-auto"></i>
+                        </p>
                         ${state.isAdmin ? `
                         <div class="flex justify-end gap-2 mt-3">
-                            <button onclick="openZoneModal('${z.id}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-md text-xs font-semibold"><i class="fa-solid fa-pen text-wow-gold"></i> Edit</button>
-                            <button onclick="deleteZone('${z.id}')" class="px-2.5 py-1 bg-red-950/60 hover:bg-red-900 border border-red-800/60 text-red-300 rounded-md text-xs font-semibold"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="event.stopPropagation();openZoneModal('${z.id}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-md text-xs font-semibold"><i class="fa-solid fa-pen text-wow-gold"></i> Edit</button>
+                            <button onclick="event.stopPropagation();deleteZone('${z.id}')" class="px-2.5 py-1 bg-red-950/60 hover:bg-red-900 border border-red-800/60 text-red-300 rounded-md text-xs font-semibold"><i class="fa-solid fa-trash"></i></button>
                         </div>` : ''}
                     </div>`;
             };
@@ -1776,6 +1946,8 @@
             document.getElementById('zoneMax').value = z ? z.max : '';
             document.getElementById('zoneFaction').value = z ? z.faction : (zoneFilter !== 'ALL' ? zoneFilter : 'Alliance');
             document.getElementById('zoneNotes').value = z ? (z.notes || '') : '';
+            editTowns = z ? (z.towns || []).map(t => ({ ...t })) : [];
+            renderTownEditor();
             openModal('zoneModal');
         }
 
@@ -1789,7 +1961,8 @@
                 name: document.getElementById('zoneName').value.trim(),
                 min, max,
                 faction: document.getElementById('zoneFaction').value,
-                notes: document.getElementById('zoneNotes').value.trim()
+                notes: document.getElementById('zoneNotes').value.trim(),
+                towns: editTowns.filter(t => t.name.trim()).map(t => ({ name: t.name.trim(), type: t.type, faction: t.faction }))
             };
             if (id) {
                 const z = state.zones.find(x => x.id === id);
@@ -1810,9 +1983,225 @@
             renderZoneList();
         }
 
+
+        // ---- Zone detail (towns & cities) + towns editor ----
+        const TOWN_STYLE = {
+            Alliance: { text: 'text-blue-300', bg: 'bg-blue-500/10', border: 'border-blue-400/50', icon: 'fa-shield-halved' },
+            Horde:    { text: 'text-red-300',  bg: 'bg-red-500/10',  border: 'border-red-400/50',  icon: 'fa-skull' },
+            Neutral:  { text: 'text-amber-200', bg: 'bg-amber-300/10', border: 'border-amber-300/50', icon: 'fa-scale-balanced' }
+        };
+        let editTowns = [];
+
+        function lvlText(min, max) {
+            const a = parseInt(min), b = parseInt(max);
+            if (!a && !b) return 'Level TBD';
+            if (a && b) return a === b ? `Level ${a}` : `Levels ${a}&ndash;${b}`;
+            return `Level ${a || b}`;
+        }
+
+        function openZoneDetail(id) {
+            const z = state.zones.find(x => x.id === id);
+            if (!z) return;
+            const st = ZONE_STYLE[z.faction] || ZONE_STYLE.Contested;
+            const towns = (z.towns || []).slice().sort((a, b) => (a.type === 'City' ? 0 : 1) - (b.type === 'City' ? 0 : 1) || a.name.localeCompare(b.name));
+            document.getElementById('zoneDetailBody').innerHTML = `
+                <h2 class="section-title text-2xl font-bold text-wow-gold pr-8">${escHtml(z.name)}</h2>
+                <div class="flex flex-wrap items-center gap-2 mt-2">
+                    <span class="px-2 py-0.5 rounded-md text-xs font-extrabold border ${st.border} ${st.bg} ${st.text}"><i class="fa-solid ${st.icon} mr-1"></i>${z.faction === 'Contested' ? 'Contested' : z.faction}</span>
+                    <span class="px-2 py-0.5 rounded-md text-xs font-bold bg-slate-900 border border-slate-700 text-slate-200">${lvlText(z.min, z.max)}</span>
+                </div>
+                ${z.notes ? `<p class="text-sm text-slate-300 mt-3">${escHtml(z.notes)}</p>` : ''}
+                <h3 class="section-title text-sm font-bold text-slate-200 mt-5 mb-2 pb-2 border-b border-slate-700 flex items-center gap-2"><i class="fa-solid fa-house-flag text-wow-gold"></i> Towns &amp; Cities</h3>
+                <div class="space-y-2">
+                    ${towns.length ? towns.map(t => {
+                        const ts = TOWN_STYLE[t.faction] || TOWN_STYLE.Neutral;
+                        return `<div class="flex items-center justify-between gap-3 bg-slate-900/70 border border-slate-700 rounded-lg px-3 py-2">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <i class="fa-solid ${t.type === 'City' ? 'fa-city' : 'fa-house'} text-wow-gold/80 w-4 text-center"></i>
+                                <div class="min-w-0"><p class="font-bold text-slate-100 truncate">${escHtml(t.name)}</p><p class="text-[11px] text-slate-400">${t.type === 'City' ? 'City' : 'Town'}</p></div>
+                            </div>
+                            <span class="shrink-0 px-2 py-0.5 rounded-md text-[11px] font-extrabold border ${ts.border} ${ts.bg} ${ts.text}"><i class="fa-solid ${ts.icon} mr-1"></i>${t.faction}</span>
+                        </div>`;
+                    }).join('') : '<p class="text-sm text-slate-500 italic">No towns or cities listed yet.</p>'}
+                </div>
+                ${state.isAdmin ? `<div class="flex justify-end mt-5"><button onclick="closeModal('zoneDetailModal');openZoneModal('${z.id}')" class="px-4 py-2 bg-wow-gold hover:bg-amber-500 text-slate-950 font-bold rounded-lg text-xs"><i class="fa-solid fa-pen mr-1"></i> Edit Zone &amp; Towns</button></div>` : ''}
+            `;
+            openModal('zoneDetailModal');
+        }
+
+        function renderTownEditor() {
+            const box = document.getElementById('zoneTownsEditor');
+            const f = 'bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:border-wow-gold';
+            box.innerHTML = editTowns.length ? editTowns.map((t, i) => `
+                <div class="flex items-center gap-2">
+                    <input type="text" value="${escHtml(t.name)}" placeholder="Town or city name" oninput="editTowns[${i}].name = this.value" class="${f} flex-1 min-w-0">
+                    <select onchange="editTowns[${i}].type = this.value" class="${f}">
+                        <option value="Town" ${t.type !== 'City' ? 'selected' : ''}>Town</option>
+                        <option value="City" ${t.type === 'City' ? 'selected' : ''}>City</option>
+                    </select>
+                    <select onchange="editTowns[${i}].faction = this.value" class="${f}">
+                        ${['Alliance', 'Horde', 'Neutral'].map(x => `<option value="${x}" ${t.faction === x ? 'selected' : ''}>${x}</option>`).join('')}
+                    </select>
+                    <button type="button" onclick="removeTownRow(${i})" class="px-2 py-2 bg-red-950/60 hover:bg-red-900 border border-red-800/60 text-red-300 rounded-md text-xs"><i class="fa-solid fa-trash"></i></button>
+                </div>`).join('') : '<p class="text-xs text-slate-500 italic">No towns yet. Click Add.</p>';
+        }
+        function addTownRow() { editTowns.push({ name: '', type: 'Town', faction: 'Neutral' }); renderTownEditor(); }
+        function removeTownRow(i) { editTowns.splice(i, 1); renderTownEditor(); }
+
+        // ---- shared header for list guides ----
+        function guideHeader(title, icon, desc, addFn, addLabel) {
+            return `
+                <div class="bg-wow-panel border border-wow-panelBorder rounded-xl p-4 sm:p-5 panel-deco flex flex-col sm:flex-row gap-4 sm:items-center justify-between">
+                    <div>
+                        <h2 class="section-title text-xl sm:text-2xl font-bold text-wow-gold flex items-center gap-3"><i class="fa-solid ${icon}"></i> ${title}</h2>
+                        <p class="text-xs sm:text-sm text-slate-400 mt-1">${desc}</p>
+                    </div>
+                    ${state.isAdmin ? `<button onclick="${addFn}()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-wow-gold text-slate-950 font-extrabold rounded-lg text-sm flex items-center gap-2 shadow-lg transition active:scale-95 shrink-0"><i class="fa-solid fa-plus"></i> ${addLabel}</button>` : ''}
+                </div>`;
+        }
+        function sortByLevel(list) {
+            return list.map((x, i) => ({ x, i })).sort((a, b) => ((parseInt(a.x.min) || 999) - (parseInt(b.x.min) || 999)) || a.i - b.i).map(o => o.x);
+        }
+        const adminBtns = (editFn, delFn, id) => state.isAdmin ? `
+            <div class="flex justify-end gap-2 mt-3">
+                <button onclick="event.stopPropagation();${editFn}('${id}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-md text-xs font-semibold"><i class="fa-solid fa-pen text-wow-gold"></i> Edit</button>
+                <button onclick="event.stopPropagation();${delFn}('${id}')" class="px-2.5 py-1 bg-red-950/60 hover:bg-red-900 border border-red-800/60 text-red-300 rounded-md text-xs font-semibold"><i class="fa-solid fa-trash"></i></button>
+            </div>` : '';
+        const locText = (zone, min, max) => `Located in <span class="font-semibold text-slate-200">${zone ? escHtml(zone) : 'TBD'}</span> &bull; ${lvlText(min, max)}`;
+
+        // ---- Dungeons ----
+        function renderDungeonsGuide(host) {
+            const list = sortByLevel(state.guideDungeons || []);
+            host.innerHTML = `
+                <div class="space-y-5">
+                    ${guideHeader('Dungeons', 'fa-dungeon', 'Every dungeon, where to find it and the recommended level range.', 'openDungeonModal', 'Add Dungeon')}
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        ${list.map(d => `
+                            <div class="wow-card bg-slate-900/70 border border-slate-700 rounded-xl p-4">
+                                <p class="font-cinzel font-bold text-lg text-wow-gold">${escHtml(d.name)}</p>
+                                <p class="text-xs sm:text-sm text-slate-400 mt-1.5"><i class="fa-solid fa-location-dot text-wow-gold/70 mr-1.5"></i>${locText(d.zone, d.min, d.max)}</p>
+                                ${adminBtns('openDungeonModal', 'deleteDungeon', d.id)}
+                            </div>`).join('') || '<p class="text-slate-500 italic">No dungeons yet.</p>'}
+                    </div>
+                </div>`;
+        }
+        function openDungeonModal(id) {
+            const d = id ? state.guideDungeons.find(x => x.id === id) : null;
+            document.getElementById('dungeonModalTitle').innerHTML = `<i class="fa-solid fa-dungeon"></i> ${d ? 'Edit Dungeon' : 'Add Dungeon'}`;
+            document.getElementById('dungeonId').value = d ? d.id : '';
+            document.getElementById('dungeonName').value = d ? d.name : '';
+            document.getElementById('dungeonZone').value = d ? (d.zone || '') : '';
+            document.getElementById('dungeonMin').value = d ? (d.min || '') : '';
+            document.getElementById('dungeonMax').value = d ? (d.max || '') : '';
+            openModal('dungeonModal');
+        }
+        function readLevels(minId, maxId) {
+            let a = parseInt(document.getElementById(minId).value) || '', b = parseInt(document.getElementById(maxId).value) || '';
+            if (a && b && b < a) [a, b] = [b, a];
+            return { min: a, max: b };
+        }
+        function saveDungeon(e) {
+            e.preventDefault();
+            const id = document.getElementById('dungeonId').value;
+            const data = { name: document.getElementById('dungeonName').value.trim(), zone: document.getElementById('dungeonZone').value.trim(), ...readLevels('dungeonMin', 'dungeonMax') };
+            if (id) { const d = state.guideDungeons.find(x => x.id === id); if (d) Object.assign(d, data); }
+            else state.guideDungeons.push({ id: 'd-' + Date.now(), ...data });
+            saveState(); closeModal('dungeonModal'); renderGuides();
+        }
+        function deleteDungeon(id) {
+            const d = state.guideDungeons.find(x => x.id === id);
+            if (!d || !confirm('Delete "' + d.name + '"?')) return;
+            state.guideDungeons = state.guideDungeons.filter(x => x.id !== id);
+            saveState(); renderGuides();
+        }
+
+        // ---- Raids ----
+        const ATT_STYLE = {
+            Yes: { text: 'text-emerald-300', bg: 'bg-emerald-500/10', border: 'border-emerald-400/50', icon: 'fa-key' },
+            No:  { text: 'text-sky-200', bg: 'bg-sky-400/10', border: 'border-sky-300/50', icon: 'fa-door-open' },
+            TBD: { text: 'text-amber-200', bg: 'bg-amber-300/10', border: 'border-amber-300/50', icon: 'fa-circle-question' }
+        };
+        function renderRaidsGuide(host) {
+            const list = sortByLevel(state.guideRaids || []);
+            host.innerHTML = `
+                <div class="space-y-5">
+                    ${guideHeader('Raids', 'fa-dragon', 'Click a raid to see players needed, tier sets and attunement.', 'openRaidModal', 'Add Raid')}
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        ${list.map(r => `
+                            <div onclick="openRaidDetail('${r.id}')" class="wow-card cursor-pointer bg-slate-900/70 border border-slate-700 rounded-xl p-4">
+                                <div class="flex items-start justify-between gap-2">
+                                    <p class="font-cinzel font-bold text-lg text-wow-gold">${escHtml(r.name)}</p>
+                                    <i class="fa-solid fa-chevron-right text-[11px] text-slate-400 mt-2"></i>
+                                </div>
+                                <p class="text-xs sm:text-sm text-slate-400 mt-1.5"><i class="fa-solid fa-location-dot text-wow-gold/70 mr-1.5"></i>${locText(r.zone, r.min, r.max)}</p>
+                                ${adminBtns('openRaidModal', 'deleteRaid', r.id)}
+                            </div>`).join('') || '<p class="text-slate-500 italic">No raids yet.</p>'}
+                    </div>
+                </div>`;
+        }
+        function openRaidDetail(id) {
+            const r = state.guideRaids.find(x => x.id === id);
+            if (!r) return;
+            const at = ATT_STYLE[r.attunement] || ATT_STYLE.TBD;
+            document.getElementById('raidDetailBody').innerHTML = `
+                <h2 class="section-title text-2xl font-bold text-wow-gold pr-8">${escHtml(r.name)}</h2>
+                <p class="text-sm text-slate-400 mt-1.5"><i class="fa-solid fa-location-dot text-wow-gold/70 mr-1.5"></i>${locText(r.zone, r.min, r.max)}</p>
+                <div class="grid grid-cols-2 gap-3 mt-5">
+                    <div class="bg-slate-900/70 border border-slate-700 rounded-lg p-3">
+                        <p class="text-[11px] uppercase tracking-wider font-bold text-slate-400 mb-1"><i class="fa-solid fa-users mr-1 text-wow-gold"></i> Players needed</p>
+                        <p class="text-lg font-black text-slate-100">${r.players ? escHtml(r.players) : 'TBD'}</p>
+                    </div>
+                    <div class="bg-slate-900/70 border border-slate-700 rounded-lg p-3">
+                        <p class="text-[11px] uppercase tracking-wider font-bold text-slate-400 mb-1"><i class="fa-solid fa-key mr-1 text-wow-gold"></i> Attunement</p>
+                        <span class="inline-block px-2 py-0.5 rounded-md text-sm font-extrabold border ${at.border} ${at.bg} ${at.text}"><i class="fa-solid ${at.icon} mr-1"></i>${r.attunement || 'TBD'}</span>
+                    </div>
+                </div>
+                <div class="bg-slate-900/70 border border-slate-700 rounded-lg p-3 mt-3">
+                    <p class="text-[11px] uppercase tracking-wider font-bold text-slate-400 mb-1.5"><i class="fa-solid fa-shirt mr-1 text-wow-gold"></i> Tier sets</p>
+                    ${r.tierSets ? `<p class="text-sm text-slate-200" style="white-space:pre-line">${escHtml(r.tierSets)}</p>` : '<p class="text-sm text-slate-500 italic">No tier set listed.</p>'}
+                </div>
+                ${state.isAdmin ? `<div class="flex justify-end mt-5"><button onclick="closeModal('raidDetailModal');openRaidModal('${r.id}')" class="px-4 py-2 bg-wow-gold hover:bg-amber-500 text-slate-950 font-bold rounded-lg text-xs"><i class="fa-solid fa-pen mr-1"></i> Edit Raid</button></div>` : ''}
+            `;
+            openModal('raidDetailModal');
+        }
+        function openRaidModal(id) {
+            const r = id ? state.guideRaids.find(x => x.id === id) : null;
+            document.getElementById('raidModalTitle').innerHTML = `<i class="fa-solid fa-dragon"></i> ${r ? 'Edit Raid' : 'Add Raid'}`;
+            document.getElementById('raidId').value = r ? r.id : '';
+            document.getElementById('raidName').value = r ? r.name : '';
+            document.getElementById('raidZone').value = r ? (r.zone || '') : '';
+            document.getElementById('raidMin').value = r ? (r.min || '') : '';
+            document.getElementById('raidMax').value = r ? (r.max || '') : '';
+            document.getElementById('raidPlayers').value = r ? (r.players || '') : '';
+            document.getElementById('raidAttune').value = r ? (r.attunement || 'TBD') : 'TBD';
+            document.getElementById('raidTier').value = r ? (r.tierSets || '') : '';
+            openModal('raidModal');
+        }
+        function saveRaid(e) {
+            e.preventDefault();
+            const id = document.getElementById('raidId').value;
+            const data = {
+                name: document.getElementById('raidName').value.trim(),
+                zone: document.getElementById('raidZone').value.trim(),
+                ...readLevels('raidMin', 'raidMax'),
+                players: document.getElementById('raidPlayers').value.trim(),
+                attunement: document.getElementById('raidAttune').value,
+                tierSets: document.getElementById('raidTier').value.trim()
+            };
+            if (id) { const r = state.guideRaids.find(x => x.id === id); if (r) Object.assign(r, data); }
+            else state.guideRaids.push({ id: 'r-' + Date.now(), ...data });
+            saveState(); closeModal('raidModal'); renderGuides();
+        }
+        function deleteRaid(id) {
+            const r = state.guideRaids.find(x => x.id === id);
+            if (!r || !confirm('Delete "' + r.name + '"?')) return;
+            state.guideRaids = state.guideRaids.filter(x => x.id !== id);
+            saveState(); renderGuides();
+        }
+
         // EXPORT & IMPORT DATA
         function exportData() {
-            const publicData = { header: state.header, races: state.races, raceFactions: state.raceFactions, classes: state.classes, content: state.content, zones: state.zones, characters: state.characters };
+            const publicData = { header: state.header, races: state.races, raceFactions: state.raceFactions, classes: state.classes, content: state.content, zones: state.zones, guideDungeons: state.guideDungeons, guideRaids: state.guideRaids, characters: state.characters };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(publicData, null, 2));
             const dlAnchorElem = document.createElement('a');
             dlAnchorElem.setAttribute("href", dataStr);
@@ -1833,7 +2222,9 @@
                     if (imported.classes) state.classes = imported.classes;
                     if (imported.content) state.content = imported.content;
                     if (imported.header) state.header = imported.header;
-                    if (Array.isArray(imported.zones)) state.zones = imported.zones;
+                    if (Array.isArray(imported.zones)) state.zones = migrateZones(imported.zones);
+                    if (Array.isArray(imported.guideDungeons)) state.guideDungeons = imported.guideDungeons;
+                    if (Array.isArray(imported.guideRaids)) state.guideRaids = imported.guideRaids;
 
                     saveState();
                     applyHeader();

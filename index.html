@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WoW Forever - Friends & Family Roster</title>
+    <title>WoW Forever</title>
+    <link rel="icon" type="image/png" href="logo.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -22,14 +23,22 @@
                     },
                     colors: {
                         wow: {
-                            gold: '#FFB800',
-                            goldHover: '#E0A200',
-                            panel: '#151921',
-                            panelBorder: '#2E384D',
-                            darkBg: '#0B0D12',
-                            cardBg: '#1C2331',
-                            alliance: '#0078FF',
-                            horde: '#B30000',
+                            gold: '#F0DDB0',
+                            goldHover: '#DDC48A',
+                            panel: '#0B3556',
+                            panelBorder: '#8A6B3F',
+                            darkBg: '#06223A',
+                            cardBg: '#0F4468',
+                            alliance: '#4DA3FF',
+                            horde: '#D13A3A',
+                        },
+                        slate: {
+                            50: '#FBF6EA', 100: '#F6EEDB', 200: '#EFE2C4', 300: '#E2D2AC', 400: '#C9B88F',
+                            500: '#97B0C4', 600: '#3F7396', 700: '#2A5F85', 800: '#14486B', 900: '#0A3050', 950: '#061E35'
+                        },
+                        amber: {
+                            50: '#FBF6EA', 100: '#F6EEDB', 200: '#F3E6C6', 300: '#EBD9A8', 400: '#E4CE98',
+                            500: '#D8BC7C', 600: '#B8975A', 700: '#8A6B3F', 800: '#5E4829', 900: '#3D2E19'
                         }
                     }
                 }
@@ -39,52 +48,83 @@
 
     <style>
         body {
-            background-color: #0B0D12;
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(255, 184, 0, 0.08), transparent 40%),
-                radial-gradient(circle at 10% 20%, rgba(0, 120, 255, 0.05), transparent 30%),
-                radial-gradient(circle at 90% 20%, rgba(179, 0, 0, 0.05), transparent 30%);
+            background-color: #08304F;
+            background-image:
+                radial-gradient(ellipse at 50% -5%, rgba(80, 200, 240, 0.40), transparent 55%),
+                radial-gradient(circle at 10% 35%, rgba(240, 221, 176, 0.07), transparent 28%),
+                radial-gradient(circle at 90% 35%, rgba(240, 221, 176, 0.07), transparent 28%),
+                linear-gradient(180deg, #0F5E8E 0%, #0A436A 38%, #07304F 100%);
             background-attachment: fixed;
-            color: #E2E8F0;
+            color: #EFE2C4;
+        }
+        /* faint compass / rune watermark behind everything */
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' fill='none' stroke='%23F0DDB0' stroke-width='1'%3E%3Ccircle cx='200' cy='200' r='190'/%3E%3Ccircle cx='200' cy='200' r='160'/%3E%3Ccircle cx='200' cy='200' r='120' stroke-dasharray='3 7'/%3E%3Cpath d='M200 10 L215 185 L390 200 L215 215 L200 390 L185 215 L10 200 L185 185 Z'/%3E%3Cpath d='M65 65 L200 200 L335 65 M65 335 L200 200 L335 335' stroke-width='.6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: center 55%;
+            background-size: min(120vh, 1100px);
+            opacity: 0.055;
         }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0B0D12;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #2E384D;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #FFB800;
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #06223A; }
+        ::-webkit-scrollbar-thumb { background: #3F7396; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #F0DDB0; }
 
-        .wow-card {
-            transition: all 0.25s ease-in-out;
-        }
+        .wow-card { transition: all 0.25s ease-in-out; }
         .wow-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(240, 221, 176, 0.35), 0 0 24px rgba(240, 221, 176, 0.12);
         }
+
+        /* HEADER DECORATION */
+        .site-header {
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(90, 210, 245, 0.30), transparent 60%),
+                linear-gradient(180deg, #082C49 0%, #0B3E64 100%);
+        }
+        .site-header::after {
+            content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px;
+            background: linear-gradient(90deg, transparent, #8A6B3F 15%, #F0DDB0 50%, #8A6B3F 85%, transparent);
+        }
+        .site-header .corner { position: absolute; width: 46px; height: 46px; border: 2px solid #8A6B3F; opacity: .8; pointer-events: none; }
+        .site-header .corner.tl { top: 10px; left: 10px; border-right: 0; border-bottom: 0; border-top-left-radius: 10px; }
+        .site-header .corner.tr { top: 10px; right: 10px; border-left: 0; border-bottom: 0; border-top-right-radius: 10px; }
+        .site-header .corner.bl { bottom: 10px; left: 10px; border-right: 0; border-top: 0; border-bottom-left-radius: 10px; }
+        .site-header .corner.br { bottom: 10px; right: 10px; border-left: 0; border-top: 0; border-bottom-right-radius: 10px; }
+
+        .logo-glow {
+            filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 22px rgba(90, 210, 245, 0.35));
+            animation: logoPulse 6s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%, 100% { filter: drop-shadow(0 6px 18px rgba(0,0,0,.55)) drop-shadow(0 0 18px rgba(90,210,245,.28)); }
+            50%      { filter: drop-shadow(0 6px 18px rgba(0,0,0,.55)) drop-shadow(0 0 32px rgba(240,221,176,.45)); }
+        }
+
+        .ornament { display: flex; align-items: center; justify-content: center; gap: 14px; color: #F0DDB0; }
+        .ornament span { height: 1px; width: min(26vw, 220px); background: linear-gradient(90deg, transparent, #8A6B3F, #F0DDB0); }
+        .ornament span:last-child { transform: scaleX(-1); }
+        .ornament i { font-size: 13px; filter: drop-shadow(0 0 6px rgba(240,221,176,.6)); }
+
+        .section-title { font-family: 'Cinzel', serif; letter-spacing: .08em; text-shadow: 0 2px 10px rgba(0,0,0,.45); }
+        .panel-deco { box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(240,221,176,.12); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col font-sans">
 
     <!-- TOP HEADER / BANNER -->
-    <header class="relative border-b-2 border-wow-panelBorder bg-wow-panel py-8 px-4 sm:px-8 shadow-2xl">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="text-center md:text-left flex-1">
-                <h1 id="headerTitle" class="text-2xl sm:text-4xl font-extrabold font-cinzel text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-wow-gold to-amber-500 tracking-wider mb-2">
-                    WoW Forever Roster - November 4th Launch
-                </h1>
-                <p id="headerSubtitle" class="text-slate-400 text-sm sm:text-base max-w-3xl font-normal leading-relaxed">
-                    Our family & friends character hub for World of Warcraft: Forever! Track stats, professions, gear, and boss completions.
-                </p>
+    <header class="site-header relative border-b-2 border-wow-panelBorder py-8 px-4 sm:px-8 shadow-2xl">
+        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+        <div class="max-w-7xl mx-auto flex flex-col items-center gap-5">
+            <div class="text-center flex flex-col items-center gap-3">
+                <img src="logo.png" alt="World of Warcraft: Forever" class="logo-glow h-44 sm:h-56 w-auto select-none"
+                     onerror="this.style.display='none';document.getElementById('headerTitle').classList.remove('sr-only')">
+                <h1 id="headerTitle" class="sr-only text-3xl sm:text-5xl font-extrabold font-cinzel text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-300 to-amber-600 tracking-wider">WoW Forever</h1>
+                <div class="ornament"><span></span><i class="fa-solid fa-compass"></i><span></span></div>
+                <p id="headerSubtitle" class="text-slate-300 text-sm sm:text-base max-w-3xl font-normal leading-relaxed"></p>
             </div>
 
             <!-- Controls Toolbar -->
@@ -140,7 +180,7 @@
     </div>
 
     <!-- TAB BAR -->
-    <nav id="tabBar" class="bg-wow-panel/90 border-b border-wow-panelBorder sticky top-0 z-30 backdrop-blur"></nav>
+    <nav id="tabBar" class="bg-slate-950/80 border-b border-wow-panelBorder sticky top-0 z-30 backdrop-blur shadow-lg shadow-black/30"></nav>
 
     <!-- MAIN CONTAINER (ROSTER TAB) -->
     <main id="rosterPanel" class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
@@ -199,10 +239,13 @@
     <!-- EMBEDDED TABS (News, Talent Calculator, future guides) -->
     <div id="embedHost" class="hidden flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8"></div>
 
+    <!-- GUIDES (has its own sub-tabs) -->
+    <div id="guidesHost" class="hidden flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8"></div>
+
     <!-- FOOTER -->
-    <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+    <footer class="border-t border-wow-panelBorder/60 bg-slate-950/40 py-6 text-center text-xs text-slate-500">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
-            <p>World of Warcraft: Forever Roster Hub &bull; Crafted for Family & Friends</p>
+            <p class="flex items-center gap-2"><i class="fa-solid fa-compass text-wow-gold"></i> World of Warcraft: Forever Roster Hub</p>
             <p class="text-slate-600">All Warcraft assets, icons, and names belong to Blizzard Entertainment.</p>
         </div>
     </footer>
@@ -490,6 +533,49 @@
     </div>
 
 
+    <!-- ZONE EDIT MODAL -->
+    <div id="zoneModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-wow-panel border border-wow-panelBorder w-full max-w-md rounded-2xl p-6 shadow-2xl relative">
+            <h2 id="zoneModalTitle" class="text-xl font-bold font-cinzel text-wow-gold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-map-location-dot"></i> Zone
+            </h2>
+            <form onsubmit="saveZone(event)" class="space-y-3">
+                <input type="hidden" id="zoneId">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Zone name</label>
+                    <input type="text" id="zoneName" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Min level</label>
+                        <input type="number" id="zoneMin" min="1" max="80" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Max level</label>
+                        <input type="number" id="zoneMax" min="1" max="80" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Area</label>
+                    <select id="zoneFaction" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                        <option value="Alliance">Alliance</option>
+                        <option value="Horde">Horde</option>
+                        <option value="Contested">Contested (both factions)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Notes (optional)</label>
+                    <input type="text" id="zoneNotes" placeholder="Starting zone, good quests, dungeon nearby..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('zoneModal')" class="px-3.5 py-2 bg-slate-800 text-slate-300 rounded-lg text-xs font-semibold">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-wow-gold hover:bg-amber-500 text-slate-950 font-bold rounded-lg text-xs">Save Zone</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <!-- APPLICATION JAVASCRIPT LOGIC -->
     <script>
         // CORE STATE & DEFAULTS
@@ -543,20 +629,64 @@
             Horde: ["", "Scout", "Grunt", "Sergeant", "Senior Sergeant", "First Sergeant", "Stone Guard", "Blood Guard", "Legionnaire", "Centurion", "Champion", "Lieutenant General", "General", "Warlord", "High Warlord"]
         };
 
+
+        // LEVELING ZONES (defaults = standard Classic ranges; admin can edit everything)
+        const DEFAULT_ZONES = [
+            { id: 'z-elwynn', name: 'Elwynn Forest', min: 1, max: 10, faction: 'Alliance', notes: 'Human starting zone' },
+            { id: 'z-dunmorogh', name: 'Dun Morogh', min: 1, max: 10, faction: 'Alliance', notes: 'Dwarf & Gnome starting zone' },
+            { id: 'z-teldrassil', name: 'Teldrassil', min: 1, max: 10, faction: 'Alliance', notes: 'Night Elf starting zone' },
+            { id: 'z-darkshore', name: 'Darkshore', min: 10, max: 20, faction: 'Alliance', notes: '' },
+            { id: 'z-lochmodan', name: 'Loch Modan', min: 10, max: 20, faction: 'Alliance', notes: '' },
+            { id: 'z-westfall', name: 'Westfall', min: 10, max: 20, faction: 'Alliance', notes: '' },
+            { id: 'z-redridge', name: 'Redridge Mountains', min: 15, max: 25, faction: 'Alliance', notes: '' },
+            { id: 'z-duskwood', name: 'Duskwood', min: 18, max: 30, faction: 'Alliance', notes: '' },
+            { id: 'z-wetlands', name: 'Wetlands', min: 20, max: 30, faction: 'Alliance', notes: '' },
+            { id: 'z-durotar', name: 'Durotar', min: 1, max: 10, faction: 'Horde', notes: 'Orc & Troll starting zone' },
+            { id: 'z-mulgore', name: 'Mulgore', min: 1, max: 10, faction: 'Horde', notes: 'Tauren starting zone' },
+            { id: 'z-tirisfal', name: 'Tirisfal Glades', min: 1, max: 10, faction: 'Horde', notes: 'Undead starting zone' },
+            { id: 'z-silverpine', name: 'Silverpine Forest', min: 10, max: 20, faction: 'Horde', notes: '' },
+            { id: 'z-barrens', name: 'The Barrens', min: 10, max: 25, faction: 'Horde', notes: '' },
+            { id: 'z-stonetalon', name: 'Stonetalon Mountains', min: 15, max: 27, faction: 'Horde', notes: '' },
+            { id: 'z-ashenvale', name: 'Ashenvale', min: 18, max: 30, faction: 'Contested', notes: '' },
+            { id: 'z-hillsbrad', name: 'Hillsbrad Foothills', min: 20, max: 30, faction: 'Contested', notes: '' },
+            { id: 'z-thousandneedles', name: 'Thousand Needles', min: 25, max: 35, faction: 'Contested', notes: '' },
+            { id: 'z-alterac', name: 'Alterac Mountains', min: 30, max: 40, faction: 'Contested', notes: '' },
+            { id: 'z-arathi', name: 'Arathi Highlands', min: 30, max: 40, faction: 'Contested', notes: '' },
+            { id: 'z-desolace', name: 'Desolace', min: 30, max: 40, faction: 'Contested', notes: '' },
+            { id: 'z-stranglethorn', name: 'Stranglethorn Vale', min: 30, max: 45, faction: 'Contested', notes: '' },
+            { id: 'z-dustwallow', name: 'Dustwallow Marsh', min: 35, max: 45, faction: 'Contested', notes: '' },
+            { id: 'z-badlands', name: 'Badlands', min: 35, max: 45, faction: 'Contested', notes: '' },
+            { id: 'z-swamp', name: 'Swamp of Sorrows', min: 35, max: 45, faction: 'Contested', notes: '' },
+            { id: 'z-feralas', name: 'Feralas', min: 40, max: 50, faction: 'Contested', notes: '' },
+            { id: 'z-hinterlands', name: 'The Hinterlands', min: 40, max: 50, faction: 'Contested', notes: '' },
+            { id: 'z-tanaris', name: 'Tanaris', min: 40, max: 50, faction: 'Contested', notes: '' },
+            { id: 'z-searing', name: 'Searing Gorge', min: 43, max: 50, faction: 'Contested', notes: '' },
+            { id: 'z-azshara', name: 'Azshara', min: 45, max: 55, faction: 'Contested', notes: '' },
+            { id: 'z-blasted', name: 'Blasted Lands', min: 45, max: 55, faction: 'Contested', notes: '' },
+            { id: 'z-felwood', name: 'Felwood', min: 48, max: 55, faction: 'Contested', notes: '' },
+            { id: 'z-ungoro', name: "Un'Goro Crater", min: 48, max: 55, faction: 'Contested', notes: '' },
+            { id: 'z-burning', name: 'Burning Steppes', min: 50, max: 58, faction: 'Contested', notes: '' },
+            { id: 'z-wpl', name: 'Western Plaguelands', min: 51, max: 58, faction: 'Contested', notes: '' },
+            { id: 'z-epl', name: 'Eastern Plaguelands', min: 53, max: 60, faction: 'Contested', notes: '' },
+            { id: 'z-winterspring', name: 'Winterspring', min: 53, max: 60, faction: 'Contested', notes: '' },
+            { id: 'z-silithus', name: 'Silithus', min: 55, max: 60, faction: 'Contested', notes: '' }
+        ];
+
         let state = {
             isAdmin: false,
             adminPasscode: localStorage.getItem('wow_admin_passcode') || DEFAULT_PASSCODE,
             viewMode: localStorage.getItem('wow_view_mode') || 'grid',
             activeContentTab: 'dungeons',
             header: JSON.parse(localStorage.getItem('wow_header')) || {
-                title: "WoW Forever Roster - November 4th Launch",
-                subtitle: "Our family & friends character hub for World of Warcraft: Forever! Track stats, professions, gear, and boss completions."
+                title: "WoW Forever",
+                subtitle: "Track characters, professions, dungeons, raids and boss completions."
             },
             races: JSON.parse(localStorage.getItem('wow_races')) || DEFAULT_RACES,
             raceFactions: JSON.parse(localStorage.getItem('wow_race_factions')) || DEFAULT_RACE_FACTIONS,
             classes: JSON.parse(localStorage.getItem('wow_classes')) || DEFAULT_CLASSES,
             content: JSON.parse(localStorage.getItem('wow_content')) || DEFAULT_CONTENT,
-            characters: JSON.parse(localStorage.getItem('wow_characters')) || []
+            characters: JSON.parse(localStorage.getItem('wow_characters')) || [],
+            zones: JSON.parse(localStorage.getItem('wow_zones')) || DEFAULT_ZONES.map(z => ({ ...z }))
         };
 
         // INITIALIZATION
@@ -576,6 +706,7 @@
             { id: 'news', label: 'News', icon: 'fa-newspaper', type: 'embed', sources: [
                 { label: 'Icy Veins', url: 'https://www.icy-veins.com/wow-forever/' }
             ] },
+            { id: 'guides', label: 'Guides', icon: 'fa-book-open', type: 'group' },
             { id: 'talents', label: 'Talent Calculator', icon: 'fa-diagram-project', type: 'embed', sources: [
                 { label: 'Zockify', url: 'https://www.zockify.com/forever/talents/' }
             ] },
@@ -623,6 +754,8 @@
             const host = document.getElementById('embedHost');
             document.getElementById('rosterPanel').classList.toggle('hidden', tab.type !== 'roster');
             host.classList.toggle('hidden', tab.type !== 'embed');
+            document.getElementById('guidesHost').classList.toggle('hidden', tab.type !== 'group');
+            if (tab.type === 'group') renderGuides();
             // embedded pages load the first time their tab is opened, then stay loaded
             if (tab.type === 'embed' && !document.getElementById('tab-' + tab.id)) { host.insertAdjacentHTML('beforeend', embedPanelHTML(tab)); setSource(tab.id, 0); }
             TABS.filter(t => t.type === 'embed').forEach(t => {
@@ -661,6 +794,7 @@
                         if (Array.isArray(d.classes)) state.classes = d.classes;
                         if (d.content) state.content = d.content;
                         if (d.header) state.header = d.header;
+                        if (Array.isArray(d.zones)) state.zones = d.zones;
                     }
                 } catch (e) { console.warn('roster.json not loaded, using local data', e); }
             }
@@ -675,7 +809,7 @@
 
         function discardDraft() {
             if (!confirm('Discard the changes saved in this browser and reload the published roster?')) return;
-            try { ['wow_dirty','wow_characters','wow_races','wow_race_factions','wow_classes','wow_content','wow_header'].forEach(k => localStorage.removeItem(k)); } catch (e) {}
+            try { ['wow_dirty','wow_characters','wow_races','wow_race_factions','wow_classes','wow_content','wow_header','wow_zones'].forEach(k => localStorage.removeItem(k)); } catch (e) {}
             location.reload();
         }
 
@@ -703,7 +837,7 @@
         }, true);
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') ['detailModal','characterModal'].forEach(id => closeModal(id));
+            if (e.key === 'Escape') ['detailModal','characterModal','zoneModal'].forEach(id => closeModal(id));
         });
 
         // PERSISTENCE HELPER (SAFE TRY/CATCH PREVENTS QUOTA EXCEEDED ERRORS)
@@ -715,6 +849,7 @@
                 localStorage.setItem('wow_content', JSON.stringify(state.content));
                 localStorage.setItem('wow_characters', JSON.stringify(state.characters));
                 localStorage.setItem('wow_header', JSON.stringify(state.header));
+                localStorage.setItem('wow_zones', JSON.stringify(state.zones));
                 localStorage.setItem('wow_dirty', '1');
                 renderDraftBanner();
             } catch (err) {
@@ -802,6 +937,7 @@
                 loginBtn.classList.toggle('hidden', !showLogin);
                 adminBadge.classList.add('hidden');
             }
+            renderGuides();
         }
 
         // MODAL TOGGLES
@@ -1504,9 +1640,179 @@
             openCharacterDetail(charId); // Refresh details view
         }
 
+
+        // GUIDES TAB (sub-tabs) -------------------------------------------------
+        // To add another guide later: add one entry here and a render function for it.
+        const GUIDE_TABS = [
+            { id: 'zones', label: 'Leveling Zones', icon: 'fa-map-location-dot', render: renderZonesGuide }
+        ];
+        let activeGuideId = 'zones';
+        let zoneFilter = 'ALL';
+        let zoneMyLevel = '';
+
+        function escHtml(str) {
+            return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        function showGuide(id) { activeGuideId = id; renderGuides(); }
+
+        function renderGuides() {
+            const host = document.getElementById('guidesHost');
+            if (!host) return;
+            const g = GUIDE_TABS.find(x => x.id === activeGuideId) || GUIDE_TABS[0];
+            host.innerHTML = `
+                <div class="space-y-5">
+                    <div class="flex flex-wrap items-center gap-2 bg-slate-950/50 border border-wow-panelBorder/70 rounded-xl p-2 panel-deco">
+                        ${GUIDE_TABS.map(t => `
+                            <button onclick="showGuide('${t.id}')" class="px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 border transition ${t.id === g.id ? 'bg-amber-500/20 text-wow-gold border-amber-500/50 shadow-inner' : 'bg-slate-900/60 text-slate-300 border-slate-700 hover:text-white'}">
+                                <i class="fa-solid ${t.icon}"></i> ${t.label}
+                            </button>`).join('')}
+                    </div>
+                    <div id="guideBody"></div>
+                </div>`;
+            g.render(document.getElementById('guideBody'));
+        }
+
+        // ---- Leveling Zones ----
+        const ZONE_STYLE = {
+            Alliance:  { label: 'Alliance Zones', icon: 'fa-shield-halved', color: '#4DA3FF', text: 'text-blue-300',  border: 'border-blue-400/50', bg: 'bg-blue-500/10' },
+            Horde:     { label: 'Horde Zones',    icon: 'fa-skull',         color: '#E05555', text: 'text-red-300',   border: 'border-red-400/50',  bg: 'bg-red-500/10' },
+            Contested: { label: 'Contested Zones (Both Factions)', icon: 'fa-globe', color: '#F0DDB0', text: 'text-amber-200', border: 'border-amber-300/50', bg: 'bg-amber-300/10' }
+        };
+
+        function renderZonesGuide(host) {
+            (state.zones || []).forEach((z, i) => { if (!z.id) z.id = 'z-' + Date.now() + '-' + i; });
+            host.innerHTML = `
+                <div class="space-y-5">
+                    <div class="bg-wow-panel border border-wow-panelBorder rounded-xl p-4 sm:p-5 panel-deco flex flex-col lg:flex-row gap-4 lg:items-center justify-between">
+                        <div>
+                            <h2 class="section-title text-xl sm:text-2xl font-bold text-wow-gold flex items-center gap-3"><i class="fa-solid fa-map-location-dot"></i> Leveling Zones</h2>
+                            <p class="text-xs sm:text-sm text-slate-400 mt-1">Where to quest at every level, split by Alliance, Horde and contested zones.</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <div class="flex bg-slate-950/60 p-1 rounded-lg border border-slate-700">
+                                ${['ALL', 'Alliance', 'Horde', 'Contested'].map(f => `
+                                    <button onclick="setZoneFilter('${f}')" class="px-3 py-1.5 rounded-md text-xs font-bold transition ${zoneFilter === f ? 'bg-amber-500/25 text-wow-gold' : 'text-slate-400 hover:text-white'}">${f === 'ALL' ? 'All' : f}</button>`).join('')}
+                            </div>
+                            <div class="flex items-center gap-2 bg-slate-950/60 border border-slate-700 rounded-lg px-3 py-1.5">
+                                <label for="zoneLevelInput" class="text-xs font-semibold text-slate-300 whitespace-nowrap">My level</label>
+                                <input type="number" id="zoneLevelInput" min="1" max="80" value="${zoneMyLevel}" oninput="setZoneLevel(this.value)" placeholder="--" class="w-14 bg-slate-900 border border-slate-700 rounded-md px-2 py-1 text-sm text-slate-200 focus:outline-none focus:border-wow-gold">
+                            </div>
+                            ${state.isAdmin ? `<button onclick="openZoneModal()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-wow-gold text-slate-950 font-extrabold rounded-lg text-sm flex items-center gap-2 shadow-lg transition active:scale-95"><i class="fa-solid fa-plus"></i> Add Zone</button>` : ''}
+                        </div>
+                    </div>
+                    <div id="zoneList"></div>
+                </div>`;
+            renderZoneList();
+        }
+
+        function setZoneFilter(f) { zoneFilter = f; renderGuides(); }
+        function setZoneLevel(v) { zoneMyLevel = v; renderZoneList(); }
+
+        function renderZoneList() {
+            const box = document.getElementById('zoneList');
+            if (!box) return;
+            const lvl = parseInt(zoneMyLevel) || 0;
+            const zones = state.zones || [];
+            const scaleMax = Math.max(60, ...zones.map(z => z.max || 0));
+            const order = zoneFilter === 'ALL' ? ['Alliance', 'Horde', 'Contested'] : [zoneFilter];
+
+            const suggest = lvl ? zones.filter(z => lvl >= z.min && lvl <= z.max) : [];
+            const suggestHTML = lvl ? `
+                <div class="bg-amber-300/10 border border-amber-300/40 rounded-xl p-3 text-sm text-slate-200 flex flex-wrap items-center gap-2">
+                    <i class="fa-solid fa-location-crosshairs text-wow-gold"></i>
+                    <span class="font-semibold">At level ${lvl}:</span>
+                    ${suggest.length ? suggest.map(z => `<span class="px-2 py-0.5 rounded-md text-xs font-bold border ${ZONE_STYLE[z.faction]?.border || ''} ${ZONE_STYLE[z.faction]?.bg || ''} ${ZONE_STYLE[z.faction]?.text || ''}">${escHtml(z.name)}</span>`).join('') : '<span class="text-slate-400">no zones listed for this level</span>'}
+                </div>` : '';
+
+            const card = (z) => {
+                const st = ZONE_STYLE[z.faction] || ZONE_STYLE.Contested;
+                const left = ((z.min - 1) / scaleMax) * 100;
+                const width = Math.max(2, ((z.max - z.min + 1) / scaleMax) * 100);
+                const here = lvl && lvl >= z.min && lvl <= z.max;
+                return `
+                    <div class="wow-card rounded-xl border ${here ? 'border-amber-300 ring-2 ring-amber-300/40 bg-slate-800/90' : 'border-slate-700 bg-slate-900/70'} p-3.5">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="min-w-0">
+                                <p class="font-bold text-slate-100 truncate">${escHtml(z.name)}</p>
+                                ${z.notes ? `<p class="text-xs text-slate-400 mt-0.5">${escHtml(z.notes)}</p>` : ''}
+                            </div>
+                            <span class="shrink-0 px-2 py-0.5 rounded-md text-xs font-extrabold border ${st.border} ${st.bg} ${st.text}">Lv ${z.min}&ndash;${z.max}</span>
+                        </div>
+                        <div class="relative h-2 rounded-full bg-slate-950/80 mt-3 overflow-hidden">
+                            <div class="absolute top-0 h-full rounded-full" style="left:${left}%;width:${width}%;background:linear-gradient(90deg, ${st.color}99, ${st.color})"></div>
+                            ${lvl ? `<div class="absolute top-0 h-full w-0.5 bg-white" style="left:${Math.min(99, ((lvl - 1) / scaleMax) * 100)}%"></div>` : ''}
+                        </div>
+                        ${state.isAdmin ? `
+                        <div class="flex justify-end gap-2 mt-3">
+                            <button onclick="openZoneModal('${z.id}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-md text-xs font-semibold"><i class="fa-solid fa-pen text-wow-gold"></i> Edit</button>
+                            <button onclick="deleteZone('${z.id}')" class="px-2.5 py-1 bg-red-950/60 hover:bg-red-900 border border-red-800/60 text-red-300 rounded-md text-xs font-semibold"><i class="fa-solid fa-trash"></i></button>
+                        </div>` : ''}
+                    </div>`;
+            };
+
+            const section = (f) => {
+                const st = ZONE_STYLE[f];
+                const list = zones.filter(z => z.faction === f).sort((a, b) => a.min - b.min || a.max - b.max || a.name.localeCompare(b.name));
+                const grid = order.length === 1 ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3' : 'space-y-3';
+                return `
+                    <section class="bg-wow-panel/80 border border-wow-panelBorder rounded-xl p-3.5 panel-deco">
+                        <h3 class="section-title text-sm sm:text-base font-bold ${st.text} flex items-center gap-2 pb-3 mb-3 border-b border-slate-700">
+                            <i class="fa-solid ${st.icon}"></i> ${st.label} <span class="ml-auto text-xs font-semibold text-slate-400">${list.length}</span>
+                        </h3>
+                        <div class="${grid}">${list.length ? list.map(card).join('') : '<p class="text-xs text-slate-500 italic">No zones yet.</p>'}</div>
+                    </section>`;
+            };
+
+            box.innerHTML = `<div class="space-y-4">${suggestHTML}<div class="grid grid-cols-1 ${order.length === 3 ? 'xl:grid-cols-3' : ''} gap-5 items-start">${order.map(section).join('')}</div></div>`;
+        }
+
+        function openZoneModal(id) {
+            const z = id ? state.zones.find(x => x.id === id) : null;
+            document.getElementById('zoneModalTitle').innerHTML = `<i class="fa-solid fa-map-location-dot"></i> ${z ? 'Edit Zone' : 'Add Zone'}`;
+            document.getElementById('zoneId').value = z ? z.id : '';
+            document.getElementById('zoneName').value = z ? z.name : '';
+            document.getElementById('zoneMin').value = z ? z.min : '';
+            document.getElementById('zoneMax').value = z ? z.max : '';
+            document.getElementById('zoneFaction').value = z ? z.faction : (zoneFilter !== 'ALL' ? zoneFilter : 'Alliance');
+            document.getElementById('zoneNotes').value = z ? (z.notes || '') : '';
+            openModal('zoneModal');
+        }
+
+        function saveZone(e) {
+            e.preventDefault();
+            const id = document.getElementById('zoneId').value;
+            let min = parseInt(document.getElementById('zoneMin').value) || 1;
+            let max = parseInt(document.getElementById('zoneMax').value) || min;
+            if (max < min) [min, max] = [max, min];
+            const data = {
+                name: document.getElementById('zoneName').value.trim(),
+                min, max,
+                faction: document.getElementById('zoneFaction').value,
+                notes: document.getElementById('zoneNotes').value.trim()
+            };
+            if (id) {
+                const z = state.zones.find(x => x.id === id);
+                if (z) Object.assign(z, data);
+            } else {
+                state.zones.push({ id: 'z-' + Date.now(), ...data });
+            }
+            saveState();
+            closeModal('zoneModal');
+            renderZoneList();
+        }
+
+        function deleteZone(id) {
+            const z = state.zones.find(x => x.id === id);
+            if (!z || !confirm('Delete "' + z.name + '"?')) return;
+            state.zones = state.zones.filter(x => x.id !== id);
+            saveState();
+            renderZoneList();
+        }
+
         // EXPORT & IMPORT DATA
         function exportData() {
-            const publicData = { header: state.header, races: state.races, raceFactions: state.raceFactions, classes: state.classes, content: state.content, characters: state.characters };
+            const publicData = { header: state.header, races: state.races, raceFactions: state.raceFactions, classes: state.classes, content: state.content, zones: state.zones, characters: state.characters };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(publicData, null, 2));
             const dlAnchorElem = document.createElement('a');
             dlAnchorElem.setAttribute("href", dataStr);
@@ -1527,11 +1833,13 @@
                     if (imported.classes) state.classes = imported.classes;
                     if (imported.content) state.content = imported.content;
                     if (imported.header) state.header = imported.header;
+                    if (Array.isArray(imported.zones)) state.zones = imported.zones;
 
                     saveState();
                     applyHeader();
                     populateDropdowns();
                     renderRoster();
+                    renderGuides();
                     alert("Roster data imported successfully!");
                 } catch (err) {
                     alert("Error importing file. Make sure it is a valid backup JSON file.");

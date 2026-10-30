@@ -126,6 +126,312 @@
       "Ysondre"
     ]
   },
+  "zones": [
+    {
+      "id": "z-elwynn",
+      "name": "Elwynn Forest",
+      "min": 1,
+      "max": 10,
+      "faction": "Alliance",
+      "notes": "Human starting zone"
+    },
+    {
+      "id": "z-dunmorogh",
+      "name": "Dun Morogh",
+      "min": 1,
+      "max": 10,
+      "faction": "Alliance",
+      "notes": "Dwarf & Gnome starting zone"
+    },
+    {
+      "id": "z-teldrassil",
+      "name": "Teldrassil",
+      "min": 1,
+      "max": 10,
+      "faction": "Alliance",
+      "notes": "Night Elf starting zone"
+    },
+    {
+      "id": "z-darkshore",
+      "name": "Darkshore",
+      "min": 10,
+      "max": 20,
+      "faction": "Alliance",
+      "notes": ""
+    },
+    {
+      "id": "z-lochmodan",
+      "name": "Loch Modan",
+      "min": 10,
+      "max": 20,
+      "faction": "Alliance",
+      "notes": ""
+    },
+    {
+      "id": "z-westfall",
+      "name": "Westfall",
+      "min": 10,
+      "max": 20,
+      "faction": "Alliance",
+      "notes": ""
+    },
+    {
+      "id": "z-redridge",
+      "name": "Redridge Mountains",
+      "min": 15,
+      "max": 25,
+      "faction": "Alliance",
+      "notes": ""
+    },
+    {
+      "id": "z-duskwood",
+      "name": "Duskwood",
+      "min": 18,
+      "max": 30,
+      "faction": "Alliance",
+      "notes": ""
+    },
+    {
+      "id": "z-wetlands",
+      "name": "Wetlands",
+      "min": 20,
+      "max": 30,
+      "faction": "Alliance",
+      "notes": ""
+    },
+    {
+      "id": "z-durotar",
+      "name": "Durotar",
+      "min": 1,
+      "max": 10,
+      "faction": "Horde",
+      "notes": "Orc & Troll starting zone"
+    },
+    {
+      "id": "z-mulgore",
+      "name": "Mulgore",
+      "min": 1,
+      "max": 10,
+      "faction": "Horde",
+      "notes": "Tauren starting zone"
+    },
+    {
+      "id": "z-tirisfal",
+      "name": "Tirisfal Glades",
+      "min": 1,
+      "max": 10,
+      "faction": "Horde",
+      "notes": "Undead starting zone"
+    },
+    {
+      "id": "z-silverpine",
+      "name": "Silverpine Forest",
+      "min": 10,
+      "max": 20,
+      "faction": "Horde",
+      "notes": ""
+    },
+    {
+      "id": "z-barrens",
+      "name": "The Barrens",
+      "min": 10,
+      "max": 25,
+      "faction": "Horde",
+      "notes": ""
+    },
+    {
+      "id": "z-stonetalon",
+      "name": "Stonetalon Mountains",
+      "min": 15,
+      "max": 27,
+      "faction": "Horde",
+      "notes": ""
+    },
+    {
+      "id": "z-ashenvale",
+      "name": "Ashenvale",
+      "min": 18,
+      "max": 30,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-hillsbrad",
+      "name": "Hillsbrad Foothills",
+      "min": 20,
+      "max": 30,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-thousandneedles",
+      "name": "Thousand Needles",
+      "min": 25,
+      "max": 35,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-alterac",
+      "name": "Alterac Mountains",
+      "min": 30,
+      "max": 40,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-arathi",
+      "name": "Arathi Highlands",
+      "min": 30,
+      "max": 40,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-desolace",
+      "name": "Desolace",
+      "min": 30,
+      "max": 40,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-stranglethorn",
+      "name": "Stranglethorn Vale",
+      "min": 30,
+      "max": 45,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-dustwallow",
+      "name": "Dustwallow Marsh",
+      "min": 35,
+      "max": 45,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-badlands",
+      "name": "Badlands",
+      "min": 35,
+      "max": 45,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-swamp",
+      "name": "Swamp of Sorrows",
+      "min": 35,
+      "max": 45,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-feralas",
+      "name": "Feralas",
+      "min": 40,
+      "max": 50,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-hinterlands",
+      "name": "The Hinterlands",
+      "min": 40,
+      "max": 50,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-tanaris",
+      "name": "Tanaris",
+      "min": 40,
+      "max": 50,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-searing",
+      "name": "Searing Gorge",
+      "min": 43,
+      "max": 50,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-azshara",
+      "name": "Azshara",
+      "min": 45,
+      "max": 55,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-blasted",
+      "name": "Blasted Lands",
+      "min": 45,
+      "max": 55,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-felwood",
+      "name": "Felwood",
+      "min": 48,
+      "max": 55,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-ungoro",
+      "name": "Un'Goro Crater",
+      "min": 48,
+      "max": 55,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-burning",
+      "name": "Burning Steppes",
+      "min": 50,
+      "max": 58,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-wpl",
+      "name": "Western Plaguelands",
+      "min": 51,
+      "max": 58,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-epl",
+      "name": "Eastern Plaguelands",
+      "min": 53,
+      "max": 60,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-winterspring",
+      "name": "Winterspring",
+      "min": 53,
+      "max": 60,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-silithus",
+      "name": "Silithus",
+      "min": 55,
+      "max": 60,
+      "faction": "Contested",
+      "notes": ""
+    }
+  ],
   "characters": [
     {
       "id": "1792853079779",

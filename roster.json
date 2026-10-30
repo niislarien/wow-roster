@@ -430,12 +430,36 @@
       "max": 60,
       "faction": "Contested",
       "notes": ""
+    },
+    {
+      "id": "z-1793366266969",
+      "name": "Riverglades",
+      "min": 35,
+      "max": 45,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-1793366348440",
+      "name": "Mount Hyjal",
+      "min": 60,
+      "max": 60,
+      "faction": "Contested",
+      "notes": ""
+    },
+    {
+      "id": "z-1793366523913",
+      "name": "Zephras Isle",
+      "min": 1,
+      "max": 12,
+      "faction": "Contested",
+      "notes": "Skyborne starting zone"
     }
   ],
   "characters": [
     {
       "id": "1792853079779",
-      "name": "Niican Vanguard",
+      "name": "Nii Vanguard",
       "owner": "Nii",
       "faction": "Alliance",
       "race": "Human",
@@ -446,16 +470,7 @@
       "pvpRankNum": 0,
       "pvpRankTitle": "",
       "imageUrl": "",
-      "professions": [
-        {
-          "name": "Blacksmithing",
-          "level": 1
-        },
-        {
-          "name": "Mining",
-          "level": 1
-        }
-      ],
+      "professions": [],
       "secondaryProfessions": {
         "cooking": 0,
         "firstAid": 0,
@@ -469,31 +484,22 @@
     },
     {
       "id": "1792863774013",
-      "name": "Niixan Vanguard",
+      "name": "Niican Vanguard",
       "owner": "Nii",
       "faction": "Alliance",
       "race": "High Order Skyborne",
       "className": "Mage",
-      "level": 2,
-      "ilvl": 2,
+      "level": 1,
+      "ilvl": 1,
       "guild": "",
       "pvpRankNum": 0,
       "pvpRankTitle": "",
       "imageUrl": "",
-      "professions": [
-        {
-          "name": "Enchanting",
-          "level": 1
-        },
-        {
-          "name": "Tailoring",
-          "level": 1
-        }
-      ],
+      "professions": [],
       "secondaryProfessions": {
-        "cooking": 1,
-        "firstAid": 1,
-        "fishing": 1
+        "cooking": 0,
+        "firstAid": 0,
+        "fishing": 0
       },
       "completedContent": {}
     },
@@ -504,6 +510,27 @@
       "faction": "Alliance",
       "race": "Human",
       "className": "Warlock",
+      "level": 1,
+      "ilvl": 1,
+      "guild": "",
+      "pvpRankNum": 0,
+      "pvpRankTitle": "",
+      "imageUrl": "",
+      "professions": [],
+      "secondaryProfessions": {
+        "cooking": 0,
+        "firstAid": 0,
+        "fishing": 0
+      },
+      "completedContent": {}
+    },
+    {
+      "id": "1793367763144",
+      "name": "Niivan Vanguard",
+      "owner": "Nii",
+      "faction": "Alliance",
+      "race": "Night Elf",
+      "className": "Druid",
       "level": 1,
       "ilvl": 1,
       "guild": "",
